@@ -1,0 +1,150 @@
+<header class="header">
+  <div class="container">
+    <div class="header-content">
+      <a class="logo" (click)="navigateToSection('top')">🏠 EmlakNet</a>
+      <nav>
+        <ul class="nav-menu">
+          <li><a (click)="setActiveTab(PropertyPriceTypeEnum.Sale)">Satılık</a></li>
+          <li><a (click)="setActiveTab(PropertyPriceTypeEnum.Rent)">Kiralık</a></li>
+          <li><a>Projeler</a></li>
+          <li><a>Haberler</a></li>
+          <li><a (click)="navigateToSection('footer')">İletişim</a></li>
+        </ul>
+      </nav>
+      <div class="user-actions">
+        <a class="btn btn-secondary" (click)="login()">Giriş Yap</a>
+        <a class="btn btn-primary">İlan Ver</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="search-section">
+  <div class="container">
+    <div class="search-tabs">
+      <button class="search-tab" [class.active]="activeTab === PropertyPriceTypeEnum.Sale" (click)="setActiveTab(PropertyPriceTypeEnum.Sale)">Satılık</button>
+      <button class="search-tab" [class.active]="activeTab === PropertyPriceTypeEnum.Rent" (click)="setActiveTab(PropertyPriceTypeEnum.Rent)">Kiralık</button>
+      <button class="search-tab" [class.active]="activeTab === PropertyPriceTypeEnum.DailyRent" (click)="setActiveTab(PropertyPriceTypeEnum.DailyRent)">Günlük Kiralık</button>
+    </div>
+
+    <form class="search-form" [formGroup]="searchForm" (ngSubmit)="onSearch()">
+      <div class="form-group">
+        <label for="city">Şehir</label>
+        <select id="city" class="form-control" formControlName="city" (change)="onCityChange()">
+          <option value="">Şehir Seçin</option>
+          <option *ngFor="let c of cities" [value]="c.id">{{ c.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="district">İlçe</label>
+        <select id="district" class="form-control" formControlName="district">
+          <option value="">İlçe Seçin</option>
+          <option *ngFor="let d of getDistrictsByCity(searchForm.get('city')?.value)" [value]="d.id">{{ d.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="property-type">Emlak Tipi</label>
+        <select id="property-type" class="form-control" formControlName="propertyType">
+          <option value="">Emlak Tipi</option>
+          <option *ngFor="let pt of propertyTypes" [value]="pt.id">{{ pt.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="min-price">Min Fiyat</label>
+        <select id="min-price" class="form-control" formControlName="minPrice">
+          <option *ngFor="let pr of getCurrentPriceRanges()" [value]="pr.value">{{ pr.label }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="max-price">Max Fiyat</label>
+        <select id="max-price" class="form-control" formControlName="maxPrice">
+          <option value="">Max Fiyat</option>
+          <option *ngFor="let pr of getCurrentPriceRanges()" [value]="pr.value">{{ pr.label }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn-search">🔍 Ara</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<app-featured-properties
+  [properties]="filteredProperties"
+  [title]="'Öne Çıkan İlanlar'"
+  [showLoadMore]="hasNextPage"
+  (propertyClick)="openProperty($event)"
+  (contactClick)="contactProperty($event)"
+  (favoriteClick)="toggleFavorite($event)"
+  (loadMoreClick)="loadMoreProperties()"
+></app-featured-properties>
+
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">{{ stats.activeListings | number:'1.0-0' }}</div>
+        <div class="stat-label">Aktif İlan</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ stats.happyCustomers | number:'1.0-0' }}</div>
+        <div class="stat-label">Mutlu Müşteri</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ stats.cities }}</div>
+        <div class="stat-label">Şehir</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ stats.support }}</div>
+        <div class="stat-label">Destek</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer" id="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>EmlakNet</h3>
+        <p>Türkiye'nin en güvenilir emlak platformu. Hayalinizdeki evi bulmak artık çok kolay!</p>
+      </div>
+      <div class="footer-section">
+        <h3>Hızlı Linkler</h3>
+        <ul>
+          <li><a>Satılık Daireler</a></li>
+          <li><a>Kiralık Evler</a></li>
+          <li><a>Villa Projeleri</a></li>
+          <li><a>Emlak Haberleri</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Yardım</h3>
+        <ul>
+          <li><a>SSS</a></li>
+          <li><a>İletişim</a></li>
+          <li><a>Gizlilik Politikası</a></li>
+          <li><a>Kullanım Şartları</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>İletişim</h3>
+        <ul>
+          <li>📞 0850 123 45 67</li>
+          <li>✉️ info@emlaknet.com</li>
+          <li>📍 İstanbul, Türkiye</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 EmlakNet. Tüm hakları saklıdır.</p>
+    </div>
+  </div>
+</footer>
+
+

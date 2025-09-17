@@ -1,0 +1,185 @@
+.property-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  }
+}
+
+.property-image {
+  height: 250px;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 500;
+
+  &.gradient-1 {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+  }
+
+  &.gradient-2 {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+  }
+
+  &.gradient-3 {
+    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+  }
+
+  &.gradient-4 {
+    background: linear-gradient(45deg, #f093fb, #f5576c);
+  }
+}
+
+.property-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+  z-index: 2;
+
+  &.badge-vip {
+    background: #ff6b6b;
+  }
+
+  &.badge-yeni {
+    background: #4ecdc4;
+  }
+
+  &.badge-kiralik {
+    background: #f093fb;
+  }
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #ff6b6b;
+  transition: all 0.3s;
+  z-index: 2;
+
+  &:hover {
+    background: #ff6b6b;
+    color: white;
+    transform: scale(1.1);
+  }
+}
+
+.property-content {
+  padding: 1.5rem;
+}
+
+.property-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #667eea;
+  margin-bottom: 0.5rem;
+}
+
+.property-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+  line-height: 1.4;
+}
+
+.property-location {
+  color: #666;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.property-features {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.property-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.property-date {
+  color: #999;
+  font-size: 0.8rem;
+}
+
+.property-contact {
+  background: #f8f9fa;
+  color: #667eea;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background-color 0.3s;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background: #667eea;
+    color: white;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .property-features {
+    gap: 0.5rem;
+  }
+  
+  .feature {
+    font-size: 0.8rem;
+  }
+  
+  .property-content {
+    padding: 1rem;
+  }
+}

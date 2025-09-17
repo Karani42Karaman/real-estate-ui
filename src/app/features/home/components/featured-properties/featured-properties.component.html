@@ -1,0 +1,31 @@
+<section class="featured-section">
+  <div class="container">
+    <h2 class="section-title">{{ title }}</h2>
+    
+    <div class="properties-grid" *ngIf="displayedProperties.length > 0; else noProperties">
+      <app-property-card
+        *ngFor="let property of displayedProperties; trackBy: trackByPropertyId"
+        [property]="property"
+        [showContactButton]="true"
+        [showFavoriteButton]="true"
+        (propertyClick)="onPropertyClick($event)"
+        (contactClick)="onContactClick($event)"
+        (favoriteClick)="onFavoriteClick($event)"
+      ></app-property-card>
+    </div>
+
+    <ng-template #noProperties>
+      <div class="no-properties">
+        <div class="no-properties-icon">🏠</div>
+        <h3>Henüz ilan bulunmuyor</h3>
+        <p>Aradığınız kriterlere uygun ilan bulunamadı. Lütfen farklı kriterler deneyin.</p>
+      </div>
+    </ng-template>
+
+    <div class="load-more-container" *ngIf="showLoadMore && properties.length > displayedProperties.length">
+      <button class="btn btn-primary load-more-btn" (click)="onLoadMore()">
+        Daha Fazla Yükle
+      </button>
+    </div>
+  </div>
+</section>

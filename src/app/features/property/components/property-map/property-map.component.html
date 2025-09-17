@@ -1,0 +1,71 @@
+<div class="property-map-container">
+  <div class="map-header">
+    <h3>📍 Konum</h3>
+    <button class="open-maps-btn" (click)="openInGoogleMaps()" *ngIf="mapUrl">
+      Google Maps'te Aç
+    </button>
+  </div>
+
+  <div class="map-content" *ngIf="!loading && mapData; else mapLoading">
+    <!-- Mock Harita Görünümü -->
+    <div class="mock-map">
+      <div class="map-placeholder">
+        <div class="map-marker">
+          <div class="marker-icon">📍</div>
+          <div class="marker-label">{{ property.address.district }}</div>
+        </div>
+        <div class="map-grid">
+          <div class="grid-line horizontal" *ngFor="let i of [1,2,3,4,5]"></div>
+          <div class="grid-line vertical" *ngFor="let i of [1,2,3,4,5]"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Yakındaki Yerler -->
+    <div class="nearby-places">
+      <h4>Yakındaki Yerler</h4>
+      <div class="places-list">
+        <div class="place-item" *ngFor="let place of mapData.nearbyPlaces">
+          <div class="place-icon">
+            <span *ngIf="place.type === 'Ulaşım'">🚇</span>
+            <span *ngIf="place.type === 'Alışveriş'">🛒</span>
+            <span *ngIf="place.type === 'Eğitim'">🏫</span>
+            <span *ngIf="place.type === 'Sağlık'">🏥</span>
+            <span *ngIf="place.type === 'Eğlence'">🎭</span>
+          </div>
+          <div class="place-info">
+            <div class="place-name">{{ place.name }}</div>
+            <div class="place-type">{{ place.type }}</div>
+          </div>
+          <div class="place-distance">{{ getDistanceText(place.distance) }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Adres Bilgileri -->
+    <div class="address-info">
+      <h4>Adres Detayları</h4>
+      <div class="address-details">
+        <div class="address-item">
+          <span class="address-label">Tam Adres:</span>
+          <span class="address-value">{{ property.address.street }}, {{ property.address.district }}, {{ property.address.city }}</span>
+        </div>
+        <div class="address-item">
+          <span class="address-label">Posta Kodu:</span>
+          <span class="address-value">{{ property.address.postalCode }}</span>
+        </div>
+        <div class="address-item">
+          <span class="address-label">Koordinatlar:</span>
+          <span class="address-value">{{ property.address.coordinates.latitude }}, {{ property.address.coordinates.longitude }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #mapLoading>
+    <div class="map-loading">
+      <div class="loading-spinner"></div>
+      <p>Harita yükleniyor...</p>
+    </div>
+  </ng-template>
+</div>

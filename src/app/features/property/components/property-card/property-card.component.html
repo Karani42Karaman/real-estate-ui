@@ -1,0 +1,49 @@
+<div class="property-card" (click)="onPropertyClick()">
+  <div class="property-image">
+    <div class="property-badge" *ngIf="getBadge()" [class]="getBadgeClass()">
+      {{ getBadge() }}
+    </div>
+    <div class="image-placeholder" [class]="getImageGradientClass()">
+      <span>Emlak Fotoğrafı</span>
+    </div>
+    <button 
+      *ngIf="showFavoriteButton" 
+      class="favorite-btn" 
+      (click)="onFavoriteClick($event)"
+      [attr.aria-label]="'Favorilere ekle'"
+    >
+      ♥
+    </button>
+  </div>
+  
+  <div class="property-content">
+    <div class="property-price">{{ formatPrice(property.price, property.priceType) }}</div>
+    <div class="property-title">{{ property.title }}</div>
+    <div class="property-location">
+      📍 {{ property.address.district }}, {{ property.address.city }}
+    </div>
+    
+    <div class="property-features">
+      <div class="feature" *ngIf="property.details?.rooms">
+        🛏️ {{ property.details.rooms }} Oda
+      </div>
+      <div class="feature" *ngIf="property.details?.bathrooms">
+        🚿 {{ property.details.bathrooms }} Banyo
+      </div>
+      <div class="feature" *ngIf="property.details?.area">
+        📐 {{ property.details.area }} m²
+      </div>
+    </div>
+    
+    <div class="property-meta">
+      <div class="property-date">{{ formatDate(property.createdAt) }}</div>
+      <button 
+        *ngIf="showContactButton" 
+        class="property-contact" 
+        (click)="onContactClick($event)"
+      >
+        İletişim
+      </button>
+    </div>
+  </div>
+</div>
