@@ -14,8 +14,8 @@
   </div>
 
   <!-- Property Detail -->
-  <div *ngIf="!loading && !error" class="property-detail">
-    <ng-container *ngIf="property$ | async as property">
+  <div *ngIf="!loading && !error && property" class="property-detail">
+    <ng-container>
       <!-- Header -->
       <div class="property-header">
         <button class="back-btn" (click)="goBack()">← Geri</button>

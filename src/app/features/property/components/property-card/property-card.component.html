@@ -1,4 +1,4 @@
-<div class="property-card" (click)="onPropertyClick()">
+<div class="property-card" (click)="onPropertyClick()" style="cursor: pointer; border: 2px solid red;" onclick="console.log('HTML onclick fired')">
   <div class="property-image">
     <div class="property-badge" *ngIf="getBadge()" [class]="getBadgeClass()">
       {{ getBadge() }}

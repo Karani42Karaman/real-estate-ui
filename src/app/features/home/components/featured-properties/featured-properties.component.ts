@@ -39,6 +39,8 @@ export class FeaturedPropertiesComponent implements OnInit {
   }
 
   onPropertyClick(property: Property): void {
+    debugger;
+    console.log('Featured properties - property clicked:', property.title, property.id);
     this.propertyClick.emit(property);
   }
 

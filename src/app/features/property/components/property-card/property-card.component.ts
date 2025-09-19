@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Property, PropertyPriceType } from '../../models/property.models';
 
@@ -9,7 +9,7 @@ import { Property, PropertyPriceType } from '../../models/property.models';
   templateUrl: './property-card.component.html',
   styleUrls: ['./property-card.component.scss']
 })
-export class PropertyCardComponent {
+export class PropertyCardComponent implements OnInit {
   @Input() property!: Property;
   @Input() showContactButton = true;
   @Input() showFavoriteButton = true;
@@ -19,7 +19,17 @@ export class PropertyCardComponent {
 
   PropertyPriceType = PropertyPriceType;
 
+  constructor() {
+    console.log('PropertyCardComponent created');
+  }
+
+  ngOnInit(): void {
+    console.log('PropertyCardComponent ngOnInit - property:', this.property);
+  }
+
   onPropertyClick(): void {
+    console.log('CLICKED! Property card clicked:', this.property?.title, this.property?.id);
+    alert('Kart tıklandı: ' + this.property?.title);
     this.propertyClick.emit(this.property);
   }
 
