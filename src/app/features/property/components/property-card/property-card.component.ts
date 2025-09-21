@@ -1,13 +1,16 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+// property-card.component.ts
+import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Property, PropertyPriceType } from '../../models/property.models';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-property-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './property-card.component.html',
-  styleUrls: ['./property-card.component.scss']
+  styleUrls: ['./property-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PropertyCardComponent implements OnInit {
   @Input() property!: Property;
@@ -20,27 +23,56 @@ export class PropertyCardComponent implements OnInit {
   PropertyPriceType = PropertyPriceType;
 
   constructor() {
-    console.log('PropertyCardComponent created');
+    console.log('PropertyCardComponent constructor çalıştı');
   }
 
   ngOnInit(): void {
-    console.log('PropertyCardComponent ngOnInit - property:', this.property);
+    console.log('PropertyCardComponent ngOnInit - property:', this.property.title);
+    if (!this.property) {
+      console.error('Property card component: property bilgisi eksik!');
+    }
   }
 
-  onPropertyClick(): void {
-    console.log('CLICKED! Property card clicked:', this.property?.title, this.property?.id);
-    alert('Kart tıklandı: ' + this.property?.title);
-    this.propertyClick.emit(this.property);
+  onPropertyClick(event?: Event): void {
+    console.log('🔥 Property card clicked:', this.property.title, 'ID:', this.property.id);
+    
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    
+    if (this.property) {
+      console.log('🔥 Emitting property click event for ID:', this.property.id);
+      this.propertyClick.emit(this.property);
+    } else {
+      console.error('❌ Property bilgisi bulunamadı!');
+    }
   }
 
-  onContactClick(event: Event): void {
-    event.stopPropagation();
-    this.contactClick.emit(this.property);
+  onMouseDown(): void {
+    console.log('🖱️ MouseDown event tetiklendi');
+    if (typeof window !== 'undefined') {
+      (window as any).console.log('🖱️ BROWSER: MouseDown tetiklendi');
+    }
+  }
+
+  onMouseUp(): void {
+    console.log('🖱️ MouseUp event tetiklendi');
+    if (typeof window !== 'undefined') {
+      (window as any).console.log('🖱️ BROWSER: MouseUp tetiklendi');
+    }
   }
 
   onFavoriteClick(event: Event): void {
     event.stopPropagation();
+    event.preventDefault();
     this.favoriteClick.emit(this.property);
+  }
+
+  onContactClick(event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
+    this.contactClick.emit(this.property);
   }
 
   formatPrice(price: number, type: PropertyPriceType): string {
@@ -68,6 +100,7 @@ export class PropertyCardComponent implements OnInit {
   }
 
   getBadge(): string | null {
+    if (!this.property) return null;
     if (this.property.isVip) return 'VIP';
     if (this.property.isFeatured) return 'YENİ';
     if (this.property.priceType === PropertyPriceType.Rent) return 'KİRALIK';
@@ -81,7 +114,7 @@ export class PropertyCardComponent implements OnInit {
   }
 
   getImageGradientClass(): string {
-    // Her property için farklı gradient renkleri
+    if (!this.property) return 'gradient-1';
     const gradients = ['gradient-1', 'gradient-2', 'gradient-3', 'gradient-4'];
     return gradients[(this.property.id - 1) % gradients.length];
   }

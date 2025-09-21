@@ -412,39 +412,77 @@ export class HomePageComponent implements OnInit {
     }
   }
 
-  openProperty(property: Property): void {
-    console.log('Navigating to property:', property.id);
-    console.log('Property object:', property);
-    debugger;
-    this.router.navigate(['/property', property.id]).then(success => {
-      console.log('Navigation success:', success);
-    }).catch(error => {
-      console.error('Navigation error:', error);
+ // home-page.component.ts içindeki openProperty ve ilgili methodları
+
+openProperty(property: Property): void {
+  console.log('🏠 HomePageComponent - openProperty çağrıldı:', property.id, property.title);
+  alert('openProperty method çağrıldı: ' + property.title + ' (ID: ' + property.id + ')');
+  
+  if (!property || !property.id) {
+    console.error('❌ Property bilgisi eksik veya geçersiz:', property);
+    this.notificationService.showError('İlan bilgisi bulunamadı.');
+    return;
+  }
+
+  console.log('🚀 Router navigate çağrılıyor - property ID:', property.id);
+  console.log('🚀 Router object:', this.router);
+  console.log('🚀 Current URL:', window.location.href);
+  
+  // Test: Basit bir route değişimi
+  this.router.navigate(['/property', property.id])
+    .then(success => {
+      console.log('✅ Navigation result:', success);
+      console.log('✅ New URL:', window.location.href);
+      if (!success) {
+        console.error('❌ Navigation başarısız!');
+        this.notificationService.showError('Sayfa yüklenirken hata oluştu.');
+      }
+    })
+    .catch(error => {
+      console.error('❌ Navigation hatası:', error);
+      this.notificationService.showError('Sayfa yüklenirken hata oluştu: ' + error.message);
     });
-  }
+}
 
-  contactProperty(property: Property): void {
-    if (!this.authService.isAuthenticated()) {
-      this.notificationService.showWarning('İletişim bilgilerini görmek için giriş yapmalısınız.');
-      return;
-    }
-    this.notificationService.showSuccess('İletişim bilgileri gösterilecek.');
+contactProperty(property: Property): void {
+  console.log('HomePageComponent - contactProperty:', property.title);
+  
+  if (!this.authService.isAuthenticated()) {
+    this.notificationService.showWarning('İletişim bilgilerini görmek için giriş yapmalısınız.');
+    return;
   }
+  
+  // Contact bilgilerini göster
+  const contactInfo = `
+    İletişim Bilgileri:
+    Ad: ${property.owner.firstName} ${property.owner.lastName}
+    Telefon: ${property.owner.phoneNumber}
+    E-posta: ${property.owner.email}
+  `;
+  
+  this.notificationService.showSuccess(contactInfo);
+}
 
-  toggleFavorite(property: Property): void {
-    if (!this.authService.isAuthenticated()) {
-      this.notificationService.showWarning('Favorilere eklemek için giriş yapmalısınız.');
-      return;
-    }
-    this.notificationService.showSuccess('Favorilere eklendi/çıkarıldı.');
+toggleFavorite(property: Property): void {
+  console.log('HomePageComponent - toggleFavorite:', property.title);
+  
+  if (!this.authService.isAuthenticated()) {
+    this.notificationService.showWarning('Favorilere eklemek için giriş yapmalısınız.');
+    return;
   }
+  
+  // Mock favorite toggle
+  this.notificationService.showSuccess(`${property.title} favorilere eklendi/çıkarıldı.`);
+}
 
-  loadMoreProperties(): void {
-    if (this.hasNextPage) {
-      this.currentPage++;
-      this.loadMockProperties(); // Mock verileri yükle
-    }
+loadMoreProperties(): void {
+  console.log('HomePageComponent - loadMoreProperties');
+  
+  if (this.hasNextPage) {
+    this.currentPage++;
+    this.loadMockProperties();
   }
+} 
 
   formatPrice(price: number, type: PropertyPriceType): string {
     const formatted = new Intl.NumberFormat('tr-TR').format(price);

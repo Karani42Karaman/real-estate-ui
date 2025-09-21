@@ -74,6 +74,8 @@
   </div>
 </section>
 
+<!-- home-page.component.html içindeki app-featured-properties kısmı -->
+
 <app-featured-properties
   [properties]="filteredProperties"
   [title]="'Öne Çıkan İlanlar'"
@@ -83,6 +85,8 @@
   (favoriteClick)="toggleFavorite($event)"
   (loadMoreClick)="loadMoreProperties()"
 ></app-featured-properties>
+
+<!-- Bu binding'lerin doğru olduğundan emin olun! -->
 
 <section class="stats-section">
   <div class="container">

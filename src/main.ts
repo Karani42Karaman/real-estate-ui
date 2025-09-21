@@ -6,19 +6,18 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-// Core Providers
+// Routes import
+import { routes } from './app/app.routes'; // Routes import edildi
+
+// Diğer import'lar...
 import { AuthInterceptor } from './app/core/interceptors/auth.interceptor';
 import { ErrorInterceptor } from './app/core/interceptors/error.interceptor';
 import { LoadingInterceptor } from './app/core/interceptors/loading.interceptor';
-
-// Services
 import { AuthService } from './app/core/services/auth.service';
 import { TokenService } from './app/core/services/token.service';
 import { NotificationService } from './app/core/services/notification.service';
 import { LoadingService } from './app/core/services/loading.service';
 import { PropertyService } from './app/features/property/services/property.service';
-
-// Guards
 import { AuthGuard } from './app/core/guards/auth.guard';
 import { RoleGuard } from './app/core/guards/role.guard';
 
@@ -29,7 +28,7 @@ bootstrapApplication(AppComponent, {
       HttpClientModule,
       ReactiveFormsModule,
       FormsModule,
-      RouterModule.forRoot([])
+      RouterModule.forRoot(routes) // Import edilen routes kullanıldı
     ),
     
     // Services

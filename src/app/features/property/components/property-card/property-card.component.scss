@@ -1,20 +1,22 @@
 .property-card {
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  display: block;
+  text-decoration: none;
+  color: inherit;
   cursor: pointer;
   position: relative;
+  // ...existing styles...
 
   &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
   }
 }
 
+// ...existing styles...
+
 .property-image {
-  height: 250px;
+  height: 200px;
   position: relative;
   overflow: hidden;
 }
@@ -55,7 +57,7 @@
   font-size: 0.8rem;
   font-weight: 600;
   color: white;
-  z-index: 2;
+  z-index: 5;
 
   &.badge-vip {
     background: #ff6b6b;
@@ -86,7 +88,7 @@
   font-size: 1.2rem;
   color: #ff6b6b;
   transition: all 0.3s;
-  z-index: 2;
+  z-index: 10;
 
   &:hover {
     background: #ff6b6b;

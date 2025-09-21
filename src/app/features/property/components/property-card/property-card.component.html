@@ -1,4 +1,4 @@
-<div class="property-card" (click)="onPropertyClick()" style="cursor: pointer; border: 2px solid red;" onclick="console.log('HTML onclick fired')">
+<a [routerLink]="['/property', property.id]" class="property-card">
   <div class="property-image">
     <div class="property-badge" *ngIf="getBadge()" [class]="getBadgeClass()">
       {{ getBadge() }}
@@ -11,6 +11,7 @@
       class="favorite-btn" 
       (click)="onFavoriteClick($event)"
       [attr.aria-label]="'Favorilere ekle'"
+      type="button"
     >
       ♥
     </button>
@@ -40,10 +41,11 @@
       <button 
         *ngIf="showContactButton" 
         class="property-contact" 
-        (click)="onContactClick($event)"
+        (click)="onContactClick($event); $event.stopPropagation()"
+        type="button"
       >
         İletişim
       </button>
     </div>
   </div>
-</div>
+</a>
