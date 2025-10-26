@@ -9,11 +9,11 @@ import { PropertyService } from '../../services/property.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { PropertyMapComponent } from '../../components/property-map/property-map.component';
-
+import { FooterComponent } from '../../../../shared/components/footer-component/footer-component';
 @Component({
   selector: 'app-property-detail',
   standalone: true,
-  imports: [CommonModule, PropertyMapComponent],
+  imports: [CommonModule, PropertyMapComponent, FooterComponent],
   templateUrl: './property-detail.component.html',
   styleUrls: ['./property-detail.component.scss']
 })
@@ -334,8 +334,12 @@ export class PropertyDetailComponent implements OnInit, OnDestroy {
       });
     }
   }
-
+  karani(): void {
+    console.log('Karanı button clicked');
+    alert('Karanı button clicked');
+  }
   goBack(): void {
+    console.log('Navigating back to home page');
     this.router.navigate(['/']);
   }
 

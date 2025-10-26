@@ -1,0 +1,167 @@
+<div class="legal-container">
+  <!-- Header -->
+  <header class="legal-header">
+    <div class="container">
+      <button class="back-button" (click)="goBack()">
+        <span class="back-icon">←</span>
+        Ana Sayfaya Dön
+      </button>
+      
+      <div class="header-content">
+        <div class="logo">
+          <span class="logo-icon">🏠</span>
+          <span class="logo-text">EmlakNet</span>
+        </div>
+        <h1 class="page-title">Kullanım Şartları</h1>
+        <p class="page-subtitle">
+          Son Güncelleme: <strong>{{ lastUpdated }}</strong>
+        </p>
+      </div>
+
+      <div class="header-actions">
+        <button class="action-button" (click)="printPage()" title="Yazdır">
+          🖨️ Yazdır
+        </button>
+        <button class="action-button" (click)="downloadPDF()" title="PDF İndir">
+          📄 PDF İndir
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="table-of-contents">
+    <div class="container">
+      <h2 class="toc-title">İçindekiler</h2>
+      <ul class="toc-list">
+        <li *ngFor="let section of sections" class="toc-item">
+          <button 
+            class="toc-link" 
+            [class.active]="activeSection === section.id"
+            (click)="scrollToSection(section.id)"
+          >
+            <span class="toc-icon">{{ section.icon }}</span>
+            <span class="toc-text">{{ section.title }}</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <main class="legal-content">
+    <div class="container">
+      <!-- Introduction -->
+      <div class="intro-section">
+        <div class="intro-icon">📜</div>
+        <h2>Hoş Geldiniz</h2>
+        <p>
+          EmlakNet platformunu kullanmadan önce lütfen bu kullanım şartlarını dikkatlice okuyunuz. 
+          Platformumuzu kullanarak bu şartları kabul etmiş sayılırsınız. Herhangi bir şart veya 
+          koşulu kabul etmiyorsanız, platformu kullanmayınız.
+        </p>
+        <div class="intro-highlights">
+          <div class="highlight-item">
+            <span class="highlight-icon">✅</span>
+            <span>Güvenli ve Şeffaf</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">🔒</span>
+            <span>KVKK Uyumlu</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">⚖️</span>
+            <span>Yasal Güvence</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sections -->
+      <div class="content-sections">
+        <section 
+          *ngFor="let section of sections" 
+          [id]="section.id" 
+          class="content-section"
+        >
+          <div class="section-header">
+            <span class="section-icon">{{ section.icon }}</span>
+            <h2 class="section-title">{{ section.title }}</h2>
+          </div>
+          
+          <div class="section-content">
+            <div *ngFor="let paragraph of section.content" class="paragraph">
+              <p [innerHTML]="paragraph"></p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Contact Banner -->
+      <div class="contact-banner">
+        <div class="banner-icon">💬</div>
+        <div class="banner-content">
+          <h3>Sorularınız mı var?</h3>
+          <p>Kullanım şartları hakkında herhangi bir sorunuz varsa bizimle iletişime geçebilirsiniz.</p>
+        </div>
+        <a href="mailto:legal@emlaknet.com" class="banner-button">
+          İletişime Geç
+        </a>
+      </div>
+
+      <!-- Related Links -->
+      <div class="related-links">
+        <h3>İlgili Belgeler</h3>
+        <div class="links-grid">
+          <a routerLink="/legal/privacy-policy" class="link-card">
+            <span class="link-icon">🔒</span>
+            <div class="link-content">
+              <h4>Gizlilik Politikası</h4>
+              <p>Kişisel verilerinizin nasıl korunduğunu öğrenin</p>
+            </div>
+            <span class="link-arrow">→</span>
+          </a>
+          
+          <a routerLink="/legal/kvkk" class="link-card">
+            <span class="link-icon">📋</span>
+            <div class="link-content">
+              <h4>KVKK Aydınlatma Metni</h4>
+              <p>Veri işleme süreçlerimiz hakkında detaylı bilgi</p>
+            </div>
+            <span class="link-arrow">→</span>
+          </a>
+
+          <a routerLink="/legal/cookie-policy" class="link-card">
+            <span class="link-icon">🍪</span>
+            <div class="link-content">
+              <h4>Çerez Politikası</h4>
+              <p>Web sitemizde kullanılan çerezler hakkında</p>
+            </div>
+            <span class="link-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="legal-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <span class="logo-icon">🏠</span>
+          <span class="logo-text">EmlakNet</span>
+        </div>
+        <p class="footer-text">
+          © 2025 EmlakNet. Tüm hakları saklıdır.
+        </p>
+        <div class="footer-links">
+          <a routerLink="/legal/privacy-policy">Gizlilik</a>
+          <span class="separator">•</span>
+          <a routerLink="/legal/kvkk">KVKK</a>
+          <span class="separator">•</span>
+          <a href="mailto:legal@emlaknet.com">İletişim</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

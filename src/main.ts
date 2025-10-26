@@ -5,9 +5,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-
-// Routes import
+ // Routes import
 import { routes } from './app/app.routes'; // Routes import edildi
+import 'zone.js';  // ← BU SATIRLA BAŞLAMALI (en üstte)
 
 // Diğer import'lar...
 import { AuthInterceptor } from './app/core/interceptors/auth.interceptor';

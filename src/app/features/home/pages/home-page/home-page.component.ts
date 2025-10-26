@@ -18,6 +18,7 @@ import {
 } from '../../../property/models/property.models';
 import { User } from '../../../../core/models/auth.models';
 import { FeaturedPropertiesComponent } from '../../components/featured-properties/featured-properties.component';
+import { FooterComponent } from '../../../../shared/components/footer-component/footer-component';  
 
 interface City {
   id: string;
@@ -47,7 +48,7 @@ type PriceOption = { value: number | ''; label: string };
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, FeaturedPropertiesComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, FeaturedPropertiesComponent,FooterComponent],
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss']
 })
@@ -538,7 +539,9 @@ loadMoreProperties(): void {
     }
   }
 
-  login(): void { }
+  login(): void { 
+    this.router.navigate(['/auth/login']);
+  }
   logout(): void { this.authService.logout(); }
 
   trackByPropertyId(index: number, item: Property): number { return item.id; }

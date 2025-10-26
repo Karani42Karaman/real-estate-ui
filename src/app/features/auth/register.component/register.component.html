@@ -1,0 +1,319 @@
+<div class="register-container">
+  <!-- Background Decoration -->
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+
+  <!-- Register Card -->
+  <div class="register-card">
+    <!-- Header -->
+    <div class="register-header">
+      <button class="back-button" (click)="navigateToLogin()" aria-label="Giriş sayfasına dön">
+        <span class="back-icon">←</span>
+      </button>
+      
+      <div class="logo">
+        <span class="logo-icon">🏠</span>
+        <span class="logo-text">EmlakNet</span>
+      </div>
+      
+      <h1 class="register-title">Hesap Oluştur</h1>
+      <p class="register-subtitle">Hemen ücretsiz üye olun</p>
+
+      <!-- Progress Steps -->
+      <div class="progress-steps">
+        <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
+          <div class="step-number">
+            <span *ngIf="currentStep <= 1">1</span>
+            <span *ngIf="currentStep > 1">✓</span>
+          </div>
+          <span class="step-label">Kişisel Bilgiler</span>
+        </div>
+        <div class="step-line" [class.completed]="currentStep > 1"></div>
+        <div class="step" [class.active]="currentStep === 2">
+          <div class="step-number">2</div>
+          <span class="step-label">Güvenlik</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Register Form -->
+    <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      
+      <!-- STEP 1: Kişisel Bilgiler -->
+      <div class="form-step" *ngIf="currentStep === 1">
+        <!-- Ad -->
+        <div class="form-group">
+          <label for="firstName" class="form-label">
+            Ad <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input
+              id="firstName"
+              type="text"
+              class="form-input"
+              formControlName="firstName"
+              placeholder="Adınız"
+              [class.error]="firstName?.invalid && firstName?.touched"
+            />
+          </div>
+          <span class="error-message" *ngIf="firstName?.invalid && firstName?.touched">
+            {{ getErrorMessage('firstName') }}
+          </span>
+        </div>
+
+        <!-- Soyad -->
+        <div class="form-group">
+          <label for="lastName" class="form-label">
+            Soyad <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input
+              id="lastName"
+              type="text"
+              class="form-input"
+              formControlName="lastName"
+              placeholder="Soyadınız"
+              [class.error]="lastName?.invalid && lastName?.touched"
+            />
+          </div>
+          <span class="error-message" *ngIf="lastName?.invalid && lastName?.touched">
+            {{ getErrorMessage('lastName') }}
+          </span>
+        </div>
+
+        <!-- E-posta -->
+        <div class="form-group">
+          <label for="email" class="form-label">
+            E-posta Adresi <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon">✉️</span>
+            <input
+              id="email"
+              type="email"
+              class="form-input"
+              formControlName="email"
+              placeholder="ornek@email.com"
+              [class.error]="email?.invalid && email?.touched"
+            />
+          </div>
+          <span class="error-message" *ngIf="email?.invalid && email?.touched">
+            {{ getErrorMessage('email') }}
+          </span>
+        </div>
+
+        <!-- Telefon -->
+        <div class="form-group">
+          <label for="phoneNumber" class="form-label">
+            Telefon Numarası <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon">📱</span>
+            <input
+              id="phoneNumber"
+              type="tel"
+              class="form-input"
+              formControlName="phoneNumber"
+              placeholder="05XX XXX XX XX"
+              [class.error]="phoneNumber?.invalid && phoneNumber?.touched"
+              (input)="formatPhoneNumber($event)"
+            />
+          </div>
+          <span class="error-message" *ngIf="phoneNumber?.invalid && phoneNumber?.touched">
+            {{ getErrorMessage('phoneNumber') }}
+          </span>
+          <span class="help-text">İlan sahipleri ile iletişim için kullanılacak</span>
+        </div>
+
+        <!-- Next Button -->
+        <button type="button" class="next-button" (click)="nextStep()">
+          Devam Et
+          <span class="arrow-icon">→</span>
+        </button>
+      </div>
+
+      <!-- STEP 2: Güvenlik -->
+      <div class="form-step" *ngIf="currentStep === 2">
+        <!-- Şifre -->
+        <div class="form-group">
+          <label for="password" class="form-label">
+            Şifre <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              class="form-input"
+              formControlName="password"
+              placeholder="En az 6 karakter"
+              [class.error]="password?.invalid && password?.touched"
+            />
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="togglePasswordVisibility()"
+              aria-label="Şifreyi göster/gizle"
+            >
+              <span *ngIf="!showPassword">👁️</span>
+              <span *ngIf="showPassword">🙈</span>
+            </button>
+          </div>
+          <span class="error-message" *ngIf="password?.invalid && password?.touched">
+            {{ getErrorMessage('password') }}
+          </span>
+
+          <!-- Şifre Gücü -->
+          <div class="password-strength" *ngIf="password?.value">
+            <div class="strength-bar">
+              <div class="strength-fill" [style.width]="getPasswordStrength().width" 
+                   [style.background]="getPasswordStrength().color"></div>
+            </div>
+            <span class="strength-text" [style.color]="getPasswordStrength().color">
+              {{ getPasswordStrength().strength }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Şifre Tekrar -->
+        <div class="form-group">
+          <label for="confirmPassword" class="form-label">
+            Şifre Tekrar <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              id="confirmPassword"
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              class="form-input"
+              formControlName="confirmPassword"
+              placeholder="Şifrenizi tekrar girin"
+              [class.error]="(confirmPassword?.invalid && confirmPassword?.touched) || registerForm.errors?.['passwordMismatch']"
+            />
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="toggleConfirmPasswordVisibility()"
+              aria-label="Şifreyi göster/gizle"
+            >
+              <span *ngIf="!showConfirmPassword">👁️</span>
+              <span *ngIf="showConfirmPassword">🙈</span>
+            </button>
+          </div>
+          <span class="error-message" *ngIf="(confirmPassword?.invalid && confirmPassword?.touched) || (confirmPassword?.touched && registerForm.errors?.['passwordMismatch'])">
+            {{ getErrorMessage('confirmPassword') }}
+          </span>
+        </div>
+
+        <!-- Kullanım Şartları -->
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              formControlName="acceptTerms"
+              class="checkbox-input"
+            />
+            <span class="checkbox-box"></span>
+            <span class="checkbox-text">
+              <a href="#" class="link">Kullanım Şartları</a> ve 
+              <a href="#" class="link">Gizlilik Politikası</a>'nı okudum, kabul ediyorum
+              <span class="required">*</span>
+            </span>
+          </label>
+          <span class="error-message" *ngIf="acceptTerms?.invalid && acceptTerms?.touched">
+            Devam etmek için kullanım şartlarını kabul etmelisiniz
+          </span>
+        </div>
+
+        <!-- Pazarlama İzni -->
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              formControlName="acceptMarketing"
+              class="checkbox-input"
+            />
+            <span class="checkbox-box"></span>
+            <span class="checkbox-text">
+              Kampanya ve duyurulardan haberdar olmak istiyorum
+            </span>
+          </label>
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-group">
+          <button type="button" class="back-step-button" (click)="previousStep()">
+            <span class="arrow-icon">←</span>
+            Geri
+          </button>
+          <button
+            type="submit"
+            class="submit-button"
+            [disabled]="isLoading || registerForm.invalid"
+            [class.loading]="isLoading"
+          >
+            <span *ngIf="!isLoading">Kayıt Ol</span>
+            <span *ngIf="isLoading" class="loading-spinner">
+              <span class="spinner"></span>
+              Kayıt ediliyor...
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Demo Fill Button -->
+      <button
+        type="button"
+        class="demo-button"
+        (click)="onDemoFill()"
+        [disabled]="isLoading"
+      >
+        <span class="demo-icon">🎯</span>
+        Demo Verilerle Doldur
+      </button>
+    </form>
+
+    <!-- Divider -->
+    <div class="divider">
+      <span class="divider-text">veya</span>
+    </div>
+
+    <!-- Social Register -->
+    <div class="social-register">
+      <button class="social-button google" disabled>
+        <span class="social-icon">G</span>
+        Google ile Kayıt Ol
+      </button>
+      <button class="social-button facebook" disabled>
+        <span class="social-icon">f</span>
+        Facebook ile Kayıt Ol
+      </button>
+    </div>
+
+    <!-- Login Link -->
+    <div class="login-section">
+      <p class="login-text">
+        Zaten hesabınız var mı?
+        <button
+          type="button"
+          class="login-link"
+          (click)="navigateToLogin()"
+        >
+          Giriş Yapın
+        </button>
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="register-footer">
+      <p class="footer-text">
+        Kayıt olarak Türkiye Cumhuriyeti yasalarına tabi olduğunuzu kabul etmiş sayılırsınız.
+      </p>
+    </div>
+  </div>
+</div>

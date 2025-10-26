@@ -12,13 +12,12 @@
     <p>Aradığınız ilan bulunamadı veya kaldırılmış olabilir.</p>
     <button class="btn btn-primary" (click)="goBack()">Ana Sayfaya Dön</button>
   </div>
-
   <!-- Property Detail -->
   <div *ngIf="!loading && !error && property" class="property-detail">
     <ng-container>
       <!-- Header -->
       <div class="property-header">
-        <button class="back-btn" (click)="goBack()">← Geri</button>
+        <button class="back-btn" type="button"  (click)="goBack()">← Geri</button>
         <div class="property-actions">
           <button class="action-btn" (click)="onShareProperty(property)" title="Paylaş">
             📤
@@ -199,4 +198,6 @@
       <app-property-map [property]="property"></app-property-map>
     </ng-container>
   </div>
+
+  <app-footer-component></app-footer-component>
 </div>
