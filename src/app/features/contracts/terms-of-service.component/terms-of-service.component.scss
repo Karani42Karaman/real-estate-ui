@@ -1,4 +1,4 @@
-.legal-container {
+.contracts-container {
   min-height: 100vh;
   background: #f8f9fa;
 }
@@ -10,7 +10,7 @@
 }
 
 // Header
-.legal-header {
+.contracts-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 2rem 0;
@@ -165,7 +165,7 @@
 }
 
 // Content
-.legal-content {
+.contracts-content {
   padding: 3rem 0;
 }
 
@@ -405,7 +405,7 @@
 }
 
 // Footer
-.legal-footer {
+.contracts-footer {
   background: #2c3e50;
   color: white;
   padding: 2rem 0;
@@ -461,7 +461,7 @@
 
 // Print Styles
 @media print {
-  .legal-header {
+  .contracts-header {
     position: static;
     page-break-after: avoid;
   }
@@ -474,7 +474,7 @@
   .back-button,
   .contact-banner,
   .related-links,
-  .legal-footer {
+  .contracts-footer {
     display: none !important;
   }
 
@@ -491,7 +491,7 @@
     padding: 0 1rem;
   }
 
-  .legal-header {
+  .contracts-header {
     padding: 1.5rem 0;
 
     .header-content {
@@ -625,7 +625,7 @@
 }
 
 @media (max-width: 480px) {
-  .legal-header {
+  .contracts-header {
     .header-content {
       .page-title {
         font-size: 1.75rem;

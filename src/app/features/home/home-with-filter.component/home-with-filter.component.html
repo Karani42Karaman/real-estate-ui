@@ -1,0 +1,362 @@
+<div class="home-container">
+  <!-- Header -->
+  <header class="home-header">
+    <div class="header-wrapper">
+      <div class="logo">
+        <span class="logo-icon">🏠</span>
+        <span class="logo-text">EmlakNet</span>
+      </div>
+      
+      <nav class="main-nav">
+        <a href="/">Ana Sayfa</a>
+        <a href="/about">Hakkımızda</a>
+        <a href="/contact">İletişim</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="btn-login">Giriş Yap</button>
+        <button class="btn-add-property">İlan Ver</button>
+      </div>
+
+      <!-- Mobile Filter Toggle -->
+      <button class="mobile-filter-toggle" (click)="toggleMobileFilter()">
+        <span class="filter-icon">🔍</span>
+        Filtrele
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="content-wrapper">
+    <!-- Filter Sidebar -->
+    <aside class="filter-sidebar" [class.mobile-open]="isMobileFilterOpen">
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">Filtrele</h2>
+        <button class="mobile-close-btn" (click)="closeMobileFilter()">✕</button>
+      </div>
+
+      <form [formGroup]="filterForm" class="filter-form">
+        
+        <!-- İlan Türü -->
+        <div class="filter-section">
+          <button 
+            type="button"
+            class="section-header" 
+            (click)="toggleCollapse('priceType')"
+          >
+            <span class="section-title">İlan Türü</span>
+            <span class="collapse-icon">{{ collapseStates.priceType ? '−' : '+' }}</span>
+          </button>
+          
+          <div class="section-content" [class.collapsed]="!collapseStates.priceType">
+            <label 
+              *ngFor="let type of priceTypes" 
+              class="radio-option"
+            >
+              <input 
+                type="radio" 
+                formControlName="priceType" 
+                [value]="type.value"
+              />
+              <span class="radio-label">{{ type.label }}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Emlak Tipi -->
+        <div class="filter-section">
+          <button 
+            type="button"
+            class="section-header" 
+            (click)="toggleCollapse('propertyType')"
+          >
+            <span class="section-title">Emlak Tipi</span>
+            <span class="collapse-icon">{{ collapseStates.propertyType ? '−' : '+' }}</span>
+          </button>
+          
+          <div class="section-content" [class.collapsed]="!collapseStates.propertyType">
+            <label class="checkbox-option">
+              <input type="checkbox" value="" />
+              <span class="checkbox-label">Tümü</span>
+            </label>
+            <label 
+              *ngFor="let type of propertyTypes" 
+              class="checkbox-option"
+            >
+              <input 
+                type="radio" 
+                formControlName="propertyType" 
+                [value]="type.value"
+              />
+              <span class="checkbox-label">{{ type.label }}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Konum -->
+        <div class="filter-section">
+          <button 
+            type="button"
+            class="section-header" 
+            (click)="toggleCollapse('location')"
+          >
+            <span class="section-title">Konum</span>
+            <span class="collapse-icon">{{ collapseStates.location ? '−' : '+' }}</span>
+          </button>
+          
+          <div class="section-content" [class.collapsed]="!collapseStates.location">
+            <div class="form-group">
+              <label class="input-label">İl</label>
+              <select class="filter-select" formControlName="city">
+                <option value="">Tüm İller</option>
+                <option *ngFor="let city of cities" [value]="city.id">
+                  {{ city.name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group" *ngIf="selectedCity">
+              <label class="input-label">İlçe</label>
+              <select class="filter-select" formControlName="district">
+                <option value="">Tüm İlçeler</option>
+                <option *ngFor="let district of availableDistricts" [value]="district">
+                  {{ district }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fiyat Aralığı -->
+        <div class="filter-section">
+          <button 
+            type="button"
+            class="section-header" 
+            (click)="toggleCollapse('price')"
+          >
+            <span class="section-title">Fiyat Aralığı</span>
+            <span class="collapse-icon">{{ collapseStates.price ? '−' : '+' }}</span>
+          </button>
+          
+          <div class="section-content" [class.collapsed]="!collapseStates.price">
+            <div class="range-inputs">
+              <div class="form-group">
+                <label class="input-label">Min</label>
+                <input 
+                  type="number" 
+                  class="filter-input" 
+                  formControlName="minPrice"
+                  placeholder="Min ₺"
+                />
+              </div>
+              <span class="range-separator">-</span>
+              <div class="form-group">
+                <label class="input-label">Max</label>
+                <input 
+                  type="number" 
+                  class="filter-input" 
+                  formControlName="maxPrice"
+                  placeholder="Max ₺"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- M² Aralığı -->
+        <div class="filter-section">
+          <button 
+            type="button"
+            class="section-header" 
+            (click)="toggleCollapse('area')"
+          >
+            <span class="section-title">M² Aralığı</span>
+            <span class="collapse-icon">{{ collapseStates.area ? '−' : '+' }}</span>
+          </button>
+          
+          <div class="section-content" [class.collapsed]="!collapseStates.area">
+            <div class="range-inputs">
+              <div class="form-group">
+                <label class="input-label">Min</label>
+                <input 
+                  type="number" 
+                  class="filter-input" 
+                  formControlName="minArea"
+                  placeholder="Min m²"
+                />
+              </div>
+              <span class="range-separator">-</span>
+              <div class="form-group">
+                <label class="input-label">Max</label>
+                <input 
+                  type="number" 
+                  class="filter-input" 
+                  formControlName="maxArea"
+                  placeholder="Max m²"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Oda Sayısı -->
+        <div class="filter-section">
+          <button 
+            type="button"
+            class="section-header" 
+            (click)="toggleCollapse('rooms')"
+          >
+            <span class="section-title">Oda Sayısı</span>
+            <span class="collapse-icon">{{ collapseStates.rooms ? '−' : '+' }}</span>
+          </button>
+          
+          <div class="section-content" [class.collapsed]="!collapseStates.rooms">
+            <div class="pill-options">
+              <label 
+                *ngFor="let room of roomOptions" 
+                class="pill-option"
+                [class.selected]="filterForm.get('rooms')?.value === room.value"
+              >
+                <input 
+                  type="radio" 
+                  formControlName="rooms" 
+                  [value]="room.value"
+                />
+                <span>{{ room.label }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bina Yaşı -->
+        <div class="filter-section">
+          <button 
+            type="button"
+            class="section-header" 
+            (click)="toggleCollapse('age')"
+          >
+            <span class="section-title">Bina Yaşı</span>
+            <span class="collapse-icon">{{ collapseStates.age ? '−' : '+' }}</span>
+          </button>
+          
+          <div class="section-content" [class.collapsed]="!collapseStates.age">
+            <label 
+              *ngFor="let age of buildingAges" 
+              class="checkbox-option"
+            >
+              <input 
+                type="radio" 
+                formControlName="buildingAge" 
+                [value]="age.value"
+              />
+              <span class="checkbox-label">{{ age.label }}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Özellikler -->
+        <div class="filter-section">
+          <button 
+            type="button"
+            class="section-header" 
+            (click)="toggleCollapse('features')"
+          >
+            <span class="section-title">Özellikler</span>
+            <span class="collapse-icon">{{ collapseStates.features ? '−' : '+' }}</span>
+          </button>
+          
+          <div class="section-content" [class.collapsed]="!collapseStates.features">
+            <label 
+              *ngFor="let feature of features" 
+              class="checkbox-option"
+            >
+              <input type="checkbox" [value]="feature.value" />
+              <span class="checkbox-label">{{ feature.label }}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Reset Button -->
+        <button type="button" class="reset-filters-btn" (click)="resetFilters()">
+          <span class="reset-icon">🔄</span>
+          Filtreleri Temizle
+        </button>
+      </form>
+    </aside>
+
+    <!-- Mobile Filter Overlay -->
+    <div 
+      class="filter-overlay" 
+      *ngIf="isMobileFilterOpen"
+      (click)="closeMobileFilter()"
+    ></div>
+
+    <!-- Properties List -->
+    <main class="properties-main">
+      <!-- Results Header -->
+      <div class="results-header">
+        <h1 class="results-title">
+          {{ filteredProperties.length }} İlan Bulundu
+        </h1>
+        <div class="sort-options">
+          <select class="sort-select">
+            <option>En Yeni</option>
+            <option>En Düşük Fiyat</option>
+            <option>En Yüksek Fiyat</option>
+            <option>En Geniş M²</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="loading" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>İlanlar yükleniyor...</p>
+      </div>
+
+      <!-- No Results -->
+      <div *ngIf="!loading && filteredProperties.length === 0" class="no-results">
+        <div class="no-results-icon">🔍</div>
+        <h3>Sonuç Bulunamadı</h3>
+        <p>Arama kriterlerinize uygun ilan bulunamadı. Filtreleri değiştirmeyi deneyin.</p>
+        <button class="btn-reset" (click)="resetFilters()">Filtreleri Temizle</button>
+      </div>
+
+      <!-- Properties Grid -->
+      <div *ngIf="!loading && filteredProperties.length > 0" class="properties-grid">
+        <div 
+          *ngFor="let property of filteredProperties" 
+          class="property-card"
+          (click)="viewProperty(property)"
+        >
+          <div class="property-image">
+            <div class="image-placeholder">
+              <span>Emlak Fotoğrafı</span>
+            </div>
+            <div class="property-badges">
+              <span class="badge badge-vip" *ngIf="property.isVip">VIP</span>
+              <span class="badge badge-featured" *ngIf="property.isFeatured">Öne Çıkan</span>
+            </div>
+          </div>
+
+          <div class="property-content">
+            <div class="property-price">{{ formatPrice(property.price) }}</div>
+            <h3 class="property-title">{{ property.title }}</h3>
+            <div class="property-location">
+              📍 {{ property.address.district }}, {{ property.address.city }}
+            </div>
+            <div class="property-details">
+              <span>{{ property.details.rooms }} Oda</span>
+              <span>{{ property.details.area }} m²</span>
+              <span>{{ property.details.floor }}. Kat</span>
+            </div>
+            <div class="property-meta">
+              <span class="property-type">{{ getPropertyTypeLabel(property.propertyType) }}</span>
+              <span class="property-date">{{ formatDate(property.createdAt) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

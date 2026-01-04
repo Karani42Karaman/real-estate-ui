@@ -4,14 +4,25 @@ import { PropertyDetailComponent } from './features/property/pages/property-deta
 import { LoginComponent } from './features/auth/login.component/login.component';
 import { ForgotPasswordComponent } from './features/auth/forgot-password.component/forgot-password.component';
 import { RegisterComponent } from './features/auth/register.component/register.component';
-import { TermsOfServiceComponent } from './features/legal/terms-of-service.component/terms-of-service.component';
-import { PrivacyPolicyComponent } from './features/legal/privacy-policy.component/privacy-policy.component';
-import { KvkkComponent } from './features/legal/kvkk.component/kvkk.component';
+import { TermsOfServiceComponent } from './features/contracts/terms-of-service.component/terms-of-service.component';
+import { PrivacyPolicyComponent } from './features/contracts/privacy-policy.component/privacy-policy.component';
+import { KvkkComponent } from './features/contracts/kvkk.component/kvkk.component';
+import { CustomerDashboardComponent } from './features/customer/customer-dasboard.component/customer-dashboard.component';
+import { HomeWithFilterComponent } from './features/home/home-with-filter.component/home-with-filter.component';  
+
+
+
+
 export const routes: Routes = [
   {
     path: '',
     component: HomePageComponent,
     title: 'EmlakNet - Ana Sayfa'
+  },
+  {
+    path:'emlak-arama',
+    component: HomeWithFilterComponent,
+    title: 'Emlak Arama - EmlakNet'
   },
   {
     path: 'property/:id',
@@ -34,19 +45,24 @@ export const routes: Routes = [
     title: 'Kayıt Ol - EmlakNet'
   },
   {
-  path: 'legal/terms-of-service',
+  path: 'contracts/terms-of-service',
   component: TermsOfServiceComponent,
   title: 'Kullanım Şartları - EmlakNet'
 },
 {
-  path: 'legal/privacy-policy',
+  path: 'contracts/privacy-policy',
   component: PrivacyPolicyComponent,
   title: 'Gizlilik Politikası - EmlakNet'
 },
 {
-  path: 'legal/kvkk',
+  path: 'contracts/kvkk',
   component: KvkkComponent,
   title: 'KVKK Aydınlatma Metni - EmlakNet'
+},
+{
+  path:'customer/dashboard',
+  component: CustomerDashboardComponent,
+  title: 'Müşteri Paneli - EmlakNet'
 },
   {
     path: '**',

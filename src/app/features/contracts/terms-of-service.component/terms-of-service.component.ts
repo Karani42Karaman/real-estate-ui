@@ -125,7 +125,7 @@ export class TermsOfServiceComponent implements OnInit {
       icon: '🔒',
       content: [
         'Kişisel verileriniz KVKK kapsamında korunur.',
-        'Detaylı bilgi için <a href="/legal/privacy-policy">Gizlilik Politikası</a>nı inceleyiniz.',
+        'Detaylı bilgi için <a href="/contracts/privacy-policy">Gizlilik Politikası</a>nı inceleyiniz.',
         'Verileriniz üçüncü taraflarla paylaşılmaz (yasal zorunluluk dışında).',
         'İstediğiniz zaman verilerinizi silebilir veya düzenleyebilirsiniz.'
       ]
@@ -159,7 +159,7 @@ export class TermsOfServiceComponent implements OnInit {
         '- Çözüm sağlanamazsa İstanbul mahkemeleri ve icra daireleri yetkilidir',
         '',
         '<strong>İletişim:</strong>',
-        '- E-posta: legal@emlaknet.com',
+        '- E-posta: contracts@emlaknet.com',
         '- Telefon: 0850 123 45 67',
         '- Adres: İstanbul, Türkiye'
       ]

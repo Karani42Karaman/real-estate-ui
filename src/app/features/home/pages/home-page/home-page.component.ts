@@ -542,6 +542,10 @@ loadMoreProperties(): void {
   login(): void { 
     this.router.navigate(['/auth/login']);
   }
+
+  goToIlanVer(): void { 
+    this.router.navigate(['/customer/dashboard']);
+  }
   logout(): void { this.authService.logout(); }
 
   trackByPropertyId(index: number, item: Property): number { return item.id; }

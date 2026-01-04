@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  real-estate-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: real-estate-ui
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+    restart: unless-stopped
+    networks:
+      - real-estate-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:4000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Add nginx reverse proxy for production
+  nginx:
+    image: nginx:alpine
+    container_name: real-estate-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certificates:/etc/nginx/certificates:ro
+    depends_on:
+      - real-estate-ui
+    networks:
+      - real-estate-network
+    restart: unless-stopped
+
+networks:
+  real-estate-network:
+    driver: bridge
