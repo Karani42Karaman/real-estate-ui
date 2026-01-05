@@ -407,10 +407,24 @@ export class HomePageComponent implements OnInit {
   }
 
   onSearch(): void {
+
+    this.router.navigate(["/emlak-arama"], {
+      queryParams: {
+        city: this.searchForm.get('city')?.value || null,
+        district: this.searchForm.get('district')?.value || null,
+        propertyType: this.searchForm.get('propertyType')?.value || null,
+        minPrice: this.searchForm.get('minPrice')?.value || null,
+        maxPrice: this.searchForm.get('maxPrice')?.value || null
+      }
+    });
+
     if (this.searchForm.valid) {
       this.currentPage = 1;
-      this.loadMockProperties(); // Mock verileri yükle
+      this.loadMockProperties(); // Mock verileri yükle burada moc verilerine işlem yapıyor bakcendde
     }
+
+
+
   }
 
  // home-page.component.ts içindeki openProperty ve ilgili methodları
@@ -542,7 +556,7 @@ loadMoreProperties(): void {
   login(): void { 
     this.router.navigate(['/auth/login']);
   }
-
+ 
   goToIlanVer(): void { 
     this.router.navigate(['/customer/dashboard']);
   }
