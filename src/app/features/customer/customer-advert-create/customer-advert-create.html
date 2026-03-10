@@ -1,0 +1,684 @@
+<div class="create-property-page">
+
+  <!-- Top Bar -->
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <button class="back-link" (click)="cancel()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Panele Dön
+      </button>
+      <div class="logo-area">
+        <span class="logo-icon">🏠</span>
+        <span class="logo-text">EmlakNet</span>
+        <span class="page-label">Yeni İlan</span>
+      </div>
+      <button class="draft-btn" (click)="saveDraft()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg>
+        Taslak Kaydet
+      </button>
+    </div>
+  </header>
+
+  <!-- Step Progress -->
+  <div class="progress-section">
+    <div class="progress-inner">
+      <div class="steps-row">
+        <div
+          *ngFor="let step of steps"
+          class="step-item"
+          [class.active]="currentStep === step.id"
+          [class.completed]="currentStep > step.id"
+          [class.clickable]="step.id < currentStep"
+          (click)="goToStep(step.id)"
+        >
+          <div class="step-circle">
+            <span *ngIf="currentStep <= step.id">{{ step.id }}</span>
+            <svg *ngIf="currentStep > step.id" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="step-info">
+            <div class="step-title">{{ step.title }}</div>
+            <div class="step-desc">{{ step.description }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" [style.width.%]="progressPercentage"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="page-body">
+    <div class="form-container">
+
+      <!-- ===================== STEP 1: Temel Bilgiler ===================== -->
+      <div class="step-panel" *ngIf="currentStep === 1">
+        <div class="panel-header">
+          <h2>📋 İlan Türü ve Temel Bilgiler</h2>
+          <p>Satmak veya kiralamak istediğiniz mülkün türünü ve fiyatını belirleyin</p>
+        </div>
+
+        <div [formGroup]="step1Form" class="form-body">
+
+          <!-- İlan Türü -->
+          <div class="form-section">
+            <h3 class="section-title">İlan Türü <span class="required">*</span></h3>
+            <div class="card-select-grid cols-3">
+              <label *ngFor="let type of priceTypes" class="card-select" [class.selected]="step1Form.get('priceType')?.value === type.value">
+                <input type="radio" formControlName="priceType" [value]="type.value" hidden />
+                <div class="card-select-icon">{{ type.icon }}</div>
+                <div class="card-select-label">{{ type.label }}</div>
+                <div class="card-select-desc">{{ type.desc }}</div>
+                <div class="card-check"></div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Emlak Tipi -->
+          <div class="form-section">
+            <h3 class="section-title">Emlak Tipi <span class="required">*</span></h3>
+            <div class="card-select-grid cols-4">
+              <label *ngFor="let type of propertyTypes" class="card-select compact" [class.selected]="step1Form.get('propertyType')?.value === type.value">
+                <input type="radio" formControlName="propertyType" [value]="type.value" hidden />
+                <div class="card-select-icon">{{ type.icon }}</div>
+                <div class="card-select-label">{{ type.label }}</div>
+                <div class="card-check"></div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Başlık -->
+          <div class="form-section">
+            <h3 class="section-title">İlan Başlığı <span class="required">*</span></h3>
+            <div class="input-wrapper" [class.error]="isControlInvalid(step1Form, 'title')">
+              <input
+                type="text"
+                formControlName="title"
+                class="form-input"
+                placeholder="Örn: Kadıköy Merkezde Deniz Manzaralı 3+1 Daire"
+                maxlength="100"
+              />
+              <div class="input-meta">
+                <span class="error-msg">{{ getControlError(step1Form, 'title') }}</span>
+                <span class="char-count">{{ getCharCount(step1Form, 'title') }}/100</span>
+              </div>
+            </div>
+            <div class="field-tip">💡 Dikkat çekici, konumu ve özellikleri belirten bir başlık daha fazla görüntülenme sağlar</div>
+          </div>
+
+          <!-- Açıklama -->
+          <div class="form-section">
+            <h3 class="section-title">Açıklama <span class="required">*</span></h3>
+            <div class="input-wrapper" [class.error]="isControlInvalid(step1Form, 'description')">
+              <textarea
+                formControlName="description"
+                class="form-textarea"
+                rows="8"
+                placeholder="Mülkünüzü detaylı açıklayın. Konum avantajları, özellikler, ulaşım imkanları, yakın çevre olanakları gibi bilgileri ekleyin..."
+                maxlength="2000"
+              ></textarea>
+              <div class="input-meta">
+                <span class="error-msg">{{ getControlError(step1Form, 'description') }}</span>
+                <span class="char-count" [class.warn]="getCharCount(step1Form, 'description') < 50">
+                  {{ getCharCount(step1Form, 'description') }}/2000
+                  <span *ngIf="getCharCount(step1Form, 'description') < 50"> (en az 50)</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fiyat -->
+          <div class="form-section">
+            <h3 class="section-title">Fiyat <span class="required">*</span></h3>
+            <div class="price-row">
+              <div class="price-input-wrap" [class.error]="isControlInvalid(step1Form, 'price')">
+                <div class="currency-prefix">₺</div>
+                <input
+                  type="number"
+                  formControlName="price"
+                  class="form-input price-input"
+                  placeholder="0"
+                  min="1"
+                />
+                <div class="price-type-badge">
+                  {{ step1Form.get('priceType')?.value === 'rent' ? '/ ay' : step1Form.get('priceType')?.value === 'daily_rent' ? '/ gün' : '' }}
+                </div>
+              </div>
+              <div class="price-options">
+                <label class="checkbox-option">
+                  <input type="checkbox" formControlName="isNegotiable" />
+                  <span class="checkbox-box"></span>
+                  <span>Pazarlık Payı Var</span>
+                </label>
+              </div>
+            </div>
+            <div class="error-msg" *ngIf="isControlInvalid(step1Form, 'price')">{{ getControlError(step1Form, 'price') }}</div>
+          </div>
+
+          <!-- İlan Paketi -->
+          <div class="form-section">
+            <h3 class="section-title">İlan Paketi</h3>
+            <div class="package-grid">
+              <label class="package-card" [class.selected]="!step1Form.get('isVip')?.value && !step1Form.get('isFeatured')?.value">
+                <input type="radio" name="package" value="standard" (change)="step1Form.patchValue({isVip: false, isFeatured: false})" [checked]="!step1Form.get('isVip')?.value && !step1Form.get('isFeatured')?.value" hidden />
+                <div class="package-badge free">Ücretsiz</div>
+                <div class="package-name">Standart İlan</div>
+                <div class="package-desc">Temel listeleme, sınırsız süre</div>
+                <ul class="package-features">
+                  <li>✓ Arama sonuçlarında görünür</li>
+                  <li>✓ 20 fotoğraf ekleme</li>
+                  <li>✓ Sınırsız güncelleme</li>
+                </ul>
+              </label>
+              <label class="package-card featured-pkg" [class.selected]="step1Form.get('isFeatured')?.value && !step1Form.get('isVip')?.value">
+                <input type="radio" name="package" value="featured" (change)="step1Form.patchValue({isFeatured: true, isVip: false})" [checked]="step1Form.get('isFeatured')?.value" hidden />
+                <div class="package-badge popular">Popüler</div>
+                <div class="package-name">Öne Çıkan</div>
+                <div class="package-desc">Listenin üstünde görün</div>
+                <ul class="package-features">
+                  <li>✓ Standart tüm özellikler</li>
+                  <li>⭐ Öne Çıkan rozeti</li>
+                  <li>⭐ 3x daha fazla görüntülenme</li>
+                  <li>⭐ 30 gün boyunca üst sırada</li>
+                </ul>
+              </label>
+              <label class="package-card vip-pkg" [class.selected]="step1Form.get('isVip')?.value">
+                <input type="radio" name="package" value="vip" (change)="step1Form.patchValue({isVip: true, isFeatured: false})" [checked]="step1Form.get('isVip')?.value" hidden />
+                <div class="package-badge vip">VIP</div>
+                <div class="package-name">VIP İlan</div>
+                <div class="package-desc">Maksimum görünürlük</div>
+                <ul class="package-features">
+                  <li>✓ Öne Çıkan tüm özellikler</li>
+                  <li>🔥 VIP rozeti</li>
+                  <li>🔥 Ana sayfada gösterim</li>
+                  <li>🔥 10x daha fazla görüntülenme</li>
+                  <li>🔥 Öncelikli destek</li>
+                </ul>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== STEP 2: Konum ===================== -->
+      <div class="step-panel" *ngIf="currentStep === 2">
+        <div class="panel-header">
+          <h2>📍 Konum Bilgileri</h2>
+          <p>Mülkünüzün tam konumunu girin. Doğru konum daha fazla ilgili alıcıya ulaşmanızı sağlar.</p>
+        </div>
+
+        <div [formGroup]="step2Form" class="form-body">
+
+          <div class="form-grid cols-2">
+            <div class="form-section">
+              <h3 class="section-title">İl <span class="required">*</span></h3>
+              <div class="select-wrapper" [class.error]="isControlInvalid(step2Form, 'city')">
+                <select formControlName="city" class="form-select" (change)="onCityChange()">
+                  <option value="">İl Seçin</option>
+                  <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+                </select>
+                <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="error-msg">{{ getControlError(step2Form, 'city') }}</div>
+            </div>
+
+            <div class="form-section">
+              <h3 class="section-title">İlçe <span class="required">*</span></h3>
+              <div class="select-wrapper" [class.error]="isControlInvalid(step2Form, 'district')">
+                <select formControlName="district" class="form-select" [disabled]="!step2Form.get('city')?.value">
+                  <option value="">İlçe Seçin</option>
+                  <option *ngFor="let d of availableDistricts" [value]="d">{{ d }}</option>
+                </select>
+                <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="error-msg">{{ getControlError(step2Form, 'district') }}</div>
+            </div>
+          </div>
+
+          <div class="form-grid cols-2">
+            <div class="form-section">
+              <h3 class="section-title">Mahalle</h3>
+              <input type="text" formControlName="neighborhood" class="form-input" placeholder="Mahalle adı" />
+            </div>
+            <div class="form-section">
+              <h3 class="section-title">Posta Kodu</h3>
+              <input type="text" formControlName="postalCode" class="form-input" placeholder="34000" maxlength="5" />
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3 class="section-title">Sokak / Cadde <span class="required">*</span></h3>
+            <div [class.error]="isControlInvalid(step2Form, 'street')">
+              <input type="text" formControlName="street" class="form-input" placeholder="Örn: Bağdat Caddesi" />
+              <div class="error-msg">{{ getControlError(step2Form, 'street') }}</div>
+            </div>
+          </div>
+
+          <div class="form-grid cols-2">
+            <div class="form-section">
+              <h3 class="section-title">Bina No</h3>
+              <input type="text" formControlName="buildingNo" class="form-input" placeholder="12" />
+            </div>
+            <div class="form-section">
+              <h3 class="section-title">Daire No</h3>
+              <input type="text" formControlName="apartmentNo" class="form-input" placeholder="4" />
+            </div>
+          </div>
+
+          <div class="form-section">
+            <label class="toggle-option">
+              <input type="checkbox" formControlName="hideExactAddress" />
+              <div class="toggle-box">
+                <div class="toggle-knob"></div>
+              </div>
+              <div class="toggle-info">
+                <span class="toggle-label">Tam adresi gizle</span>
+                <span class="toggle-desc">Alıcılar sadece mahalle ve ilçe bilgisini görür</span>
+              </div>
+            </label>
+          </div>
+
+          <!-- Mock Map -->
+          <div class="form-section">
+            <h3 class="section-title">Harita Önizleme</h3>
+            <div class="map-mock">
+              <div class="map-grid-bg">
+                <div class="map-lines-h" *ngFor="let i of [1,2,3,4,5,6]"></div>
+                <div class="map-lines-v" *ngFor="let i of [1,2,3,4,5,6]"></div>
+              </div>
+              <div class="map-pin-area">
+                <div class="map-pin-pulse"></div>
+                <div class="map-pin">📍</div>
+                <div class="map-label" *ngIf="step2Form.get('district')?.value">
+                  {{ step2Form.get('district')?.value }}, {{ getCityName() }}
+                </div>
+                <div class="map-label" *ngIf="!step2Form.get('district')?.value">
+                  Konum seçilmedi
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== STEP 3: Detaylar ===================== -->
+      <div class="step-panel" *ngIf="currentStep === 3">
+        <div class="panel-header">
+          <h2>🏠 Emlak Detayları ve Özellikler</h2>
+          <p>Mülkünüzün teknik özelliklerini ve sunduğu imkanları belirtin</p>
+        </div>
+
+        <div [formGroup]="step3Form" class="form-body">
+
+          <!-- Oda Sayısı -->
+          <div class="form-section">
+            <h3 class="section-title">Oda Sayısı</h3>
+            <div class="pill-grid">
+              <label *ngFor="let room of roomOptions"
+                class="pill-option"
+                [class.selected]="step3Form.get('rooms')?.value === room"
+              >
+                <input type="radio" formControlName="rooms" [value]="room" hidden />
+                {{ room }}
+              </label>
+            </div>
+          </div>
+
+          <div class="form-grid cols-3">
+            <div class="form-section">
+              <h3 class="section-title">Brüt Alan (m²) <span class="required">*</span></h3>
+              <div class="input-with-unit">
+                <input type="number" formControlName="area" class="form-input" placeholder="120" min="1" />
+                <span class="unit-badge">m²</span>
+              </div>
+              <div class="error-msg">{{ getControlError(step3Form, 'area') }}</div>
+            </div>
+            <div class="form-section">
+              <h3 class="section-title">Banyo Sayısı</h3>
+              <div class="counter-input">
+                <button type="button" class="counter-btn" (click)="step3Form.patchValue({bathrooms: Math.max(0, (step3Form.get('bathrooms')?.value || 0) - 1)})">−</button>
+                <span class="counter-val">{{ step3Form.get('bathrooms')?.value }}</span>
+                <button type="button" class="counter-btn" (click)="step3Form.patchValue({bathrooms: (step3Form.get('bathrooms')?.value || 0) + 1})">+</button>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3 class="section-title">Balkon Sayısı</h3>
+              <div class="counter-input">
+                <button type="button" class="counter-btn" (click)="step3Form.patchValue({balconyCount: Math.max(0, (step3Form.get('balconyCount')?.value || 0) - 1)})">−</button>
+                <span class="counter-val">{{ step3Form.get('balconyCount')?.value }}</span>
+                <button type="button" class="counter-btn" (click)="step3Form.patchValue({balconyCount: (step3Form.get('balconyCount')?.value || 0) + 1})">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-grid cols-3">
+            <div class="form-section">
+              <h3 class="section-title">Bulunduğu Kat</h3>
+              <div class="select-wrapper">
+                <select formControlName="floor" class="form-select">
+                  <option value="">Seçin</option>
+                  <option *ngFor="let f of floorOptions" [value]="f">{{ f }}</option>
+                </select>
+                <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3 class="section-title">Bina Kat Sayısı</h3>
+              <input type="number" formControlName="totalFloors" class="form-input" placeholder="10" min="1" />
+            </div>
+            <div class="form-section">
+              <h3 class="section-title">Yapım Yılı</h3>
+              <input type="number" formControlName="buildYear" class="form-input" placeholder="2020" min="1900" max="2030" />
+            </div>
+          </div>
+
+          <!-- Isıtma -->
+          <div class="form-section">
+            <h3 class="section-title">Isıtma Sistemi</h3>
+            <div class="pill-grid">
+              <label *ngFor="let h of heatingTypes"
+                class="pill-option"
+                [class.selected]="step3Form.get('heating')?.value === h.value"
+              >
+                <input type="radio" formControlName="heating" [value]="h.value" hidden />
+                {{ h.label }}
+              </label>
+            </div>
+          </div>
+
+          <!-- Hızlı Toggle'lar -->
+          <div class="form-section">
+            <h3 class="section-title">Özellikler</h3>
+            <div class="toggle-grid">
+              <label class="toggle-chip" [class.active]="step3Form.get('elevator')?.value">
+                <input type="checkbox" formControlName="elevator" hidden />
+                🛗 Asansör
+              </label>
+              <label class="toggle-chip" [class.active]="step3Form.get('furnished')?.value">
+                <input type="checkbox" formControlName="furnished" hidden />
+                🛋️ Eşyalı
+              </label>
+              <label class="toggle-chip" [class.active]="step3Form.get('creditEligible')?.value">
+                <input type="checkbox" formControlName="creditEligible" hidden />
+                🏦 Krediye Uygun
+              </label>
+              <label class="toggle-chip" [class.active]="step3Form.get('swapPossible')?.value">
+                <input type="checkbox" formControlName="swapPossible" hidden />
+                🔄 Takas Yapılır
+              </label>
+            </div>
+          </div>
+
+          <!-- İmkanlar (features) -->
+          <div class="form-section">
+            <h3 class="section-title">Konfor & İmkanlar</h3>
+            <div class="feature-group">
+              <div class="feature-chips">
+                <label *ngFor="let f of features.comfort" class="feature-chip" [class.selected]="isFeatureSelected(f.id)" (click)="toggleFeature(f.id)">
+                  {{ f.icon }} {{ f.label }}
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3 class="section-title">Güvenlik</h3>
+            <div class="feature-chips">
+              <label *ngFor="let f of features.security" class="feature-chip" [class.selected]="isFeatureSelected(f.id)" (click)="toggleFeature(f.id)">
+                {{ f.icon }} {{ f.label }}
+              </label>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3 class="section-title">Konum Avantajları</h3>
+            <div class="feature-chips">
+              <label *ngFor="let f of features.location" class="feature-chip" [class.selected]="isFeatureSelected(f.id)" (click)="toggleFeature(f.id)">
+                {{ f.icon }} {{ f.label }}
+              </label>
+            </div>
+          </div>
+
+          <!-- Tapu / Durum -->
+          <div class="form-grid cols-2">
+            <div class="form-section">
+              <h3 class="section-title">Tapu Durumu</h3>
+              <div class="select-wrapper">
+                <select formControlName="deedType" class="form-select">
+                  <option value="ownership">Kat Mülkiyeti</option>
+                  <option value="easement">Kat İrtifakı</option>
+                  <option value="share">Hisseli Tapu</option>
+                  <option value="land">Arsa Tapusu</option>
+                  <option value="none">Tapusuz</option>
+                </select>
+                <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3 class="section-title">Yapı Durumu</h3>
+              <div class="select-wrapper">
+                <select formControlName="condition" class="form-select">
+                  <option value="new">Sıfır</option>
+                  <option value="good">İyi Durumda</option>
+                  <option value="renovated">Yenilenmiş</option>
+                  <option value="needs_work">Tadilat Gerekiyor</option>
+                </select>
+                <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== STEP 4: Fotoğraflar ===================== -->
+      <div class="step-panel" *ngIf="currentStep === 4">
+        <div class="panel-header">
+          <h2>📸 Fotoğraf ve Görseller</h2>
+          <p>Kaliteli fotoğraflar, ilanınızın görüntülenme sayısını 5 kata kadar artırır</p>
+        </div>
+
+        <div class="form-body">
+          <!-- Upload Zone -->
+          <div class="form-section">
+            <div
+              class="upload-zone"
+              [class.drag-active]="dragOver"
+              (dragover)="onDragOver($event)"
+              (dragleave)="onDragLeave()"
+              (drop)="onDrop($event)"
+            >
+              <div class="upload-icon">📁</div>
+              <div class="upload-title">Fotoğraf Sürükle & Bırak</div>
+              <div class="upload-sub">veya</div>
+              <label class="upload-btn">
+                <input type="file" multiple accept="image/*" (change)="onFileSelect($event)" hidden />
+                Fotoğraf Seç
+              </label>
+              <div class="upload-info">PNG, JPG, WEBP · En fazla 20 fotoğraf · Her biri max 10MB</div>
+            </div>
+          </div>
+
+          <!-- Tips -->
+          <div class="photo-tips" *ngIf="uploadedImages.length === 0">
+            <h4>📌 İyi Fotoğraf İpuçları</h4>
+            <div class="tips-grid">
+              <div class="tip-item">
+                <span class="tip-icon">☀️</span>
+                <div>
+                  <strong>Gündüz çekin</strong>
+                  <p>Doğal ışık mekanı daha cazip gösterir</p>
+                </div>
+              </div>
+              <div class="tip-item">
+                <span class="tip-icon">🏠</span>
+                <div>
+                  <strong>Her odayı gösterin</strong>
+                  <p>Salon, mutfak, banyo, yatak odaları</p>
+                </div>
+              </div>
+              <div class="tip-item">
+                <span class="tip-icon">🌅</span>
+                <div>
+                  <strong>Manzarayı dahil edin</strong>
+                  <p>Balkon ve dış cephe görünümü önemli</p>
+                </div>
+              </div>
+              <div class="tip-item">
+                <span class="tip-icon">🧹</span>
+                <div>
+                  <strong>Derli toplu çekin</strong>
+                  <p>Temiz ve düzenli alan daha çekici görünür</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Image Grid -->
+          <div class="images-grid" *ngIf="uploadedImages.length > 0">
+            <div class="images-header">
+              <span>{{ uploadedImages.length }} fotoğraf eklendi</span>
+              <span class="primary-info">İlk fotoğraf kapak görseli olarak kullanılır</span>
+            </div>
+            <div class="image-tiles">
+              <div *ngFor="let img of uploadedImages; let i = index" class="image-tile" [class.primary]="i === 0">
+                <img [src]="img.preview" [alt]="img.name" />
+                <div class="image-overlay">
+                  <span class="primary-badge" *ngIf="i === 0">⭐ Kapak</span>
+                  <div class="image-actions">
+                    <button type="button" class="img-btn" (click)="setPrimaryImage(i)" *ngIf="i !== 0" title="Kapak yap">⭐</button>
+                    <button type="button" class="img-btn danger" (click)="removeImage(i)" title="Kaldır">🗑️</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Hint -->
+          <div class="hint-box" *ngIf="uploadedImages.length > 0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            İlk fotoğraf ana kapak görseli olarak kullanılır. ⭐ butonuna tıklayarak herhangi bir fotoğrafı kapak yapabilirsiniz.
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== STEP 5: Önizleme & Yayın ===================== -->
+      <div class="step-panel" *ngIf="currentStep === 5">
+        <div class="panel-header">
+          <h2>🚀 Önizleme ve Yayınla</h2>
+          <p>İlanınızı yayınlamadan önce kontrol edin</p>
+        </div>
+
+        <div class="form-body">
+          <!-- Preview Card -->
+          <div class="preview-card">
+            <div class="preview-image">
+              <img *ngIf="uploadedImages.length > 0" [src]="uploadedImages[0].preview" alt="Kapak fotoğrafı" />
+              <div class="preview-image-placeholder" *ngIf="uploadedImages.length === 0">
+                <span>📷</span>
+                <p>Fotoğraf eklenmedi</p>
+              </div>
+              <div class="preview-badges">
+                <span class="preview-badge vip" *ngIf="step1Form.get('isVip')?.value">VIP</span>
+                <span class="preview-badge featured" *ngIf="step1Form.get('isFeatured')?.value">Öne Çıkan</span>
+                <span class="preview-badge type">{{ getPriceTypeLabel() }}</span>
+              </div>
+            </div>
+            <div class="preview-content">
+              <div class="preview-price">{{ formatPriceDisplay() }}</div>
+              <h3 class="preview-title">{{ step1Form.get('title')?.value || 'İlan Başlığı' }}</h3>
+              <div class="preview-location">
+                📍 {{ step2Form.get('district')?.value || 'İlçe' }}, {{ getCityName() || 'Şehir' }}
+              </div>
+              <div class="preview-details">
+                <span>🏠 {{ getPropertyTypeLabel() }}</span>
+                <span>🛏️ {{ step3Form.get('rooms')?.value }}</span>
+                <span>📐 {{ step3Form.get('area')?.value || '—' }} m²</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Checklist -->
+          <div class="checklist">
+            <h3>İlan Kontrol Listesi</h3>
+            <div class="check-items">
+              <div class="check-item" [class.ok]="step1Form.get('title')?.valid" [class.fail]="step1Form.get('title')?.invalid">
+                <span class="check-icon">{{ step1Form.get('title')?.valid ? '✅' : '⚠️' }}</span>
+                <span>İlan başlığı</span>
+                <button class="fix-btn" *ngIf="step1Form.get('title')?.invalid" (click)="goToStep(1)">Düzelt</button>
+              </div>
+              <div class="check-item" [class.ok]="step1Form.get('description')?.valid" [class.fail]="step1Form.get('description')?.invalid">
+                <span class="check-icon">{{ step1Form.get('description')?.valid ? '✅' : '⚠️' }}</span>
+                <span>Açıklama (min. 50 karakter)</span>
+                <button class="fix-btn" *ngIf="step1Form.get('description')?.invalid" (click)="goToStep(1)">Düzelt</button>
+              </div>
+              <div class="check-item" [class.ok]="step1Form.get('price')?.valid" [class.fail]="step1Form.get('price')?.invalid">
+                <span class="check-icon">{{ step1Form.get('price')?.valid ? '✅' : '⚠️' }}</span>
+                <span>Fiyat bilgisi</span>
+                <button class="fix-btn" *ngIf="step1Form.get('price')?.invalid" (click)="goToStep(1)">Düzelt</button>
+              </div>
+              <div class="check-item" [class.ok]="step2Form.get('city')?.valid && step2Form.get('district')?.valid" [class.fail]="step2Form.get('city')?.invalid || step2Form.get('district')?.invalid">
+                <span class="check-icon">{{ (step2Form.get('city')?.valid && step2Form.get('district')?.valid) ? '✅' : '⚠️' }}</span>
+                <span>Konum (il ve ilçe)</span>
+                <button class="fix-btn" *ngIf="step2Form.get('city')?.invalid || step2Form.get('district')?.invalid" (click)="goToStep(2)">Düzelt</button>
+              </div>
+              <div class="check-item" [class.ok]="step3Form.get('area')?.valid" [class.fail]="step3Form.get('area')?.invalid">
+                <span class="check-icon">{{ step3Form.get('area')?.valid ? '✅' : '⚠️' }}</span>
+                <span>Alan bilgisi (m²)</span>
+                <button class="fix-btn" *ngIf="step3Form.get('area')?.invalid" (click)="goToStep(3)">Düzelt</button>
+              </div>
+              <div class="check-item" [class.ok]="uploadedImages.length > 0" [class.warn]="uploadedImages.length === 0">
+                <span class="check-icon">{{ uploadedImages.length > 0 ? '✅' : '💡' }}</span>
+                <span>Fotoğraflar ({{ uploadedImages.length }} adet)</span>
+                <button class="fix-btn" *ngIf="uploadedImages.length === 0" (click)="goToStep(4)">Ekle</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- KVKK / Sözleşme -->
+          <div class="legal-section">
+            <div class="legal-box">
+              <h4>📄 Yayın Koşulları ve KVKK</h4>
+              <div class="legal-text">
+                <p>İlanınızı yayınlayarak aşağıdaki koşulları kabul etmiş sayılırsınız:</p>
+                <ul>
+                  <li>Girilen bilgiler doğru ve günceldir</li>
+                  <li>Mülk size ait veya yasal temsil hakkına sahipsiniz</li>
+                  <li><a href="/contracts/terms-of-service" target="_blank">Kullanım Şartları</a>'nı okudum ve kabul ediyorum</li>
+                  <li><a href="/contracts/privacy-policy" target="_blank">Gizlilik Politikası</a>'nı kabul ediyorum</li>
+                  <li><a href="/contracts/kvkk" target="_blank">KVKK Aydınlatma Metni</a>'ni okudum</li>
+                </ul>
+                <div class="kvkk-note">
+                  Kişisel verileriniz 6698 sayılı KVKK kapsamında işlenmekte ve üçüncü taraflarla paylaşılmamaktadır.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="form-nav">
+        <button type="button" class="nav-btn secondary" (click)="prevStep()" *ngIf="currentStep > 1">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          Önceki
+        </button>
+        <button type="button" class="nav-btn ghost" (click)="cancel()" *ngIf="currentStep === 1">
+          İptal
+        </button>
+
+        <div class="step-counter">{{ currentStep }} / {{ totalSteps }}</div>
+
+        <button type="button" class="nav-btn primary" (click)="nextStep()" *ngIf="currentStep < totalSteps">
+          Devam Et
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <button type="button" class="nav-btn publish" (click)="onSubmit()" *ngIf="currentStep === totalSteps" [disabled]="isSubmitting">
+          <span *ngIf="!isSubmitting">🚀 İlanı Yayınla</span>
+          <span *ngIf="isSubmitting">⏳ Yayınlanıyor...</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

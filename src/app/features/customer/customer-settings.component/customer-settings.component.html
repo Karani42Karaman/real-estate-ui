@@ -1,0 +1,353 @@
+<div class="panel-layout" [class.sidebar-open]="isMobileSidebarOpen">
+
+  <div class="mobile-overlay" (click)="closeMobileSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand"><span class="brand-icon">🏠</span><span class="brand-name">EmlakNet</span></div>
+    <div class="sidebar-user">
+      <div class="avatar-circle">{{ currentUser.initials }}</div>
+      <div class="user-details"><div class="user-name">{{ currentUser.name }}</div><div class="user-email">{{ currentUser.email }}</div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-link" routerLink="/customer/dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg><span>Dashboard</span></a>
+      <a class="nav-link" routerLink="/customer/dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg><span>İlanlarım</span></a>
+      <a class="nav-link" routerLink="/customer/favorites"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span>Favorilerim</span></a>
+      <a class="nav-link" routerLink="/customer/messages"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Mesajlar</span><span class="badge danger">3</span></a>
+      <a class="nav-link" routerLink="/customer/profile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span>Profilim</span></a>
+      <a class="nav-link active" routerLink="/customer/settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg><span>Ayarlar</span></a>
+    </nav>
+    <div class="sidebar-footer"><button class="logout-btn" (click)="logout()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Çıkış Yap</button></div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <div class="mobile-topbar">
+      <button class="hamburger" (click)="toggleMobileSidebar()"><span></span><span></span><span></span></button>
+      <span class="mobile-title">Ayarlar</span>
+    </div>
+
+    <div class="settings-layout">
+
+      <!-- Settings Nav -->
+      <nav class="settings-nav">
+        <div class="settings-nav-title">Ayarlar</div>
+        <button class="snav-item" [class.active]="activeSection === 'security'" (click)="activeSection = 'security'">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          Şifre & Güvenlik
+        </button>
+        <button class="snav-item" [class.active]="activeSection === 'notifications'" (click)="activeSection = 'notifications'">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          Bildirimler
+        </button>
+        <button class="snav-item" [class.active]="activeSection === 'subscription'" (click)="activeSection = 'subscription'">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Abonelik & Paketler
+        </button>
+        <button class="snav-item danger" [class.active]="activeSection === 'danger'" (click)="activeSection = 'danger'">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Tehlikeli Bölge
+        </button>
+      </nav>
+
+      <!-- Settings Content -->
+      <div class="settings-content">
+
+        <!-- ====== SECURITY ====== -->
+        <div *ngIf="activeSection === 'security'">
+          <div class="section-header">
+            <h2>Şifre & Güvenlik</h2>
+            <p>Hesabınızın güvenliğini yönetin</p>
+          </div>
+
+          <div class="success-banner" *ngIf="pwSuccess">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Şifreniz başarıyla güncellendi!
+          </div>
+
+          <div class="card">
+            <h3 class="card-title">Şifre Değiştir</h3>
+            <form [formGroup]="passwordForm" (ngSubmit)="savePassword()">
+              <div class="field">
+                <label>Mevcut Şifre <span class="required">*</span></label>
+                <div class="pw-input">
+                  <input [type]="showCurrentPw ? 'text' : 'password'" formControlName="currentPassword" placeholder="••••••••" [class.error]="passwordForm.get('currentPassword')?.invalid && passwordForm.get('currentPassword')?.touched">
+                  <button type="button" class="pw-toggle" (click)="showCurrentPw = !showCurrentPw">
+                    <svg *ngIf="!showCurrentPw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <svg *ngIf="showCurrentPw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Yeni Şifre <span class="required">*</span></label>
+                <div class="pw-input">
+                  <input [type]="showNewPw ? 'text' : 'password'" formControlName="newPassword" placeholder="En az 8 karakter" [class.error]="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched">
+                  <button type="button" class="pw-toggle" (click)="showNewPw = !showNewPw">
+                    <svg *ngIf="!showNewPw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <svg *ngIf="showNewPw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                  </button>
+                </div>
+                <!-- Strength meter -->
+                <div class="strength-meter" *ngIf="passwordForm.get('newPassword')?.value">
+                  <div class="strength-bars">
+                    <div class="strength-bar" *ngFor="let i of [1,2,3,4]" [class.active]="passwordStrength.level >= i" [style.background]="passwordStrength.level >= i ? passwordStrength.color : null"></div>
+                  </div>
+                  <span class="strength-label" [style.color]="passwordStrength.color">{{ passwordStrength.label }}</span>
+                </div>
+                <ul class="pw-rules">
+                  <li [class.ok]="(passwordForm.get('newPassword')?.value?.length || 0) >= 8">En az 8 karakter</li>
+                   
+                </ul>
+              </div>
+
+              <div class="field">
+                <label>Şifre Tekrar <span class="required">*</span></label>
+                <div class="pw-input">
+                  <input [type]="showConfirmPw ? 'text' : 'password'" formControlName="confirmPassword" placeholder="Yeni şifrenizi tekrar girin" [class.error]="passwordForm.get('confirmPassword')?.invalid && passwordForm.get('confirmPassword')?.touched">
+                  <button type="button" class="pw-toggle" (click)="showConfirmPw = !showConfirmPw">
+                    <svg *ngIf="!showConfirmPw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <svg *ngIf="showConfirmPw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                  </button>
+                </div>
+                <span class="field-error" *ngIf="passwordForm.get('confirmPassword')?.errors?.['mismatch'] && passwordForm.get('confirmPassword')?.touched">Şifreler eşleşmiyor</span>
+              </div>
+
+              <button type="submit" class="btn-primary" [disabled]="isSavingPw">
+                <span class="spinner" *ngIf="isSavingPw"></span>
+                {{ isSavingPw ? 'Güncelleniyor...' : 'Şifreyi Güncelle' }}
+              </button>
+            </form>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title">Aktif Oturumlar</h3>
+            <div class="session-list">
+              <div class="session-item current">
+                <div class="session-icon">💻</div>
+                <div class="session-info">
+                  <span class="session-device">Windows · Chrome · İstanbul, TR</span>
+                  <span class="session-time">Şu An Aktif</span>
+                </div>
+                <span class="current-tag">Bu cihaz</span>
+              </div>
+              <div class="session-item">
+                <div class="session-icon">📱</div>
+                <div class="session-info">
+                  <span class="session-device">iPhone · Safari · İstanbul, TR</span>
+                  <span class="session-time">2 gün önce</span>
+                </div>
+                <button class="btn-end-session">Sonlandır</button>
+              </div>
+            </div>
+            <button class="btn-danger-outline">Tüm Oturumları Sonlandır</button>
+          </div>
+        </div>
+
+        <!-- ====== NOTIFICATIONS ====== -->
+        <div *ngIf="activeSection === 'notifications'">
+          <div class="section-header">
+            <h2>Bildirim Ayarları</h2>
+            <p>Hangi bildirimleri almak istediğinizi seçin</p>
+          </div>
+
+          <div class="success-banner" *ngIf="notifSuccess">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Bildirim tercihleri kaydedildi!
+          </div>
+
+          <div class="card">
+            <h3 class="card-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              E-posta Bildirimleri
+            </h3>
+            <div class="notif-group">
+              <div class="notif-item">
+                <div><span class="notif-label">Yeni Mesaj</span><span class="notif-desc">Birisi size mesaj gönderdiğinde</span></div>
+                <label class="toggle-switch"><input type="checkbox" [(ngModel)]="notifications.emailNewMessage"><span class="toggle-track"></span></label>
+              </div>
+              <div class="notif-item">
+                <div><span class="notif-label">Favoriye Eklenme</span><span class="notif-desc">İlanınız favorilere eklendiğinde</span></div>
+                <label class="toggle-switch"><input type="checkbox" [(ngModel)]="notifications.emailFavorite"><span class="toggle-track"></span></label>
+              </div>
+              <div class="notif-item">
+                <div><span class="notif-label">Haftalık Rapor</span><span class="notif-desc">Haftalık ilan istatistikleriniz</span></div>
+                <label class="toggle-switch"><input type="checkbox" [(ngModel)]="notifications.emailWeeklyReport"><span class="toggle-track"></span></label>
+              </div>
+              <div class="notif-item">
+                <div><span class="notif-label">Kampanya & Fırsatlar</span><span class="notif-desc">EmlakNet'ten özel teklifler</span></div>
+                <label class="toggle-switch"><input type="checkbox" [(ngModel)]="notifications.emailPromotion"><span class="toggle-track"></span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 13a19.79 19.79 0 01-3.07-8.67A2 2 0 012 2.18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+              SMS Bildirimleri
+            </h3>
+            <div class="notif-group">
+              <div class="notif-item">
+                <div><span class="notif-label">Yeni Mesaj</span><span class="notif-desc">Yeni mesaj geldiğinde SMS al</span></div>
+                <label class="toggle-switch"><input type="checkbox" [(ngModel)]="notifications.smsNewMessage"><span class="toggle-track"></span></label>
+              </div>
+              <div class="notif-item">
+                <div><span class="notif-label">İlan Durum Değişikliği</span><span class="notif-desc">İlanınız onaylandığında/reddedildiğinde</span></div>
+                <label class="toggle-switch"><input type="checkbox" [(ngModel)]="notifications.smsAdStatus"><span class="toggle-track"></span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+              Push Bildirimleri
+            </h3>
+            <div class="notif-group">
+              <div class="notif-item">
+                <div><span class="notif-label">Yeni Mesaj</span><span class="notif-desc">Gerçek zamanlı mesaj bildirimi</span></div>
+                <label class="toggle-switch"><input type="checkbox" [(ngModel)]="notifications.pushNewMessage"><span class="toggle-track"></span></label>
+              </div>
+              <div class="notif-item">
+                <div><span class="notif-label">Favoriye Eklenme</span><span class="notif-desc">İlanınız favoriye eklendiğinde</span></div>
+                <label class="toggle-switch"><input type="checkbox" [(ngModel)]="notifications.pushFavorite"><span class="toggle-track"></span></label>
+              </div>
+              <div class="notif-item">
+                <div><span class="notif-label">İlan Durumu</span><span class="notif-desc">İlan onay/red bildirimleri</span></div>
+                <label class="toggle-switch"><input type="checkbox" [(ngModel)]="notifications.pushAdStatus"><span class="toggle-track"></span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn-primary" (click)="saveNotifications()" [disabled]="isSavingNotif">
+              <span class="spinner" *ngIf="isSavingNotif"></span>
+              {{ isSavingNotif ? 'Kaydediliyor...' : 'Tercihleri Kaydet' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- ====== SUBSCRIPTION ====== -->
+        <div *ngIf="activeSection === 'subscription'">
+          <div class="section-header">
+            <h2>Abonelik & Paketler</h2>
+            <p>Mevcut planınızı görüntüleyin veya yükseltin</p>
+          </div>
+
+          <div class="current-plan-card">
+            <div class="cp-left">
+              <span class="cp-label">Mevcut Plan</span>
+              <span class="cp-name">{{ currentPlan }}</span>
+              <span class="cp-credits">{{ adCredits }} ilan hakkınız kaldı</span>
+            </div>
+            <div class="cp-right">
+              <div class="credits-bar">
+                <div class="credits-fill" [style.width]="(adCredits / 3 * 100) + '%'"></div>
+              </div>
+              <span class="cp-hint">{{ adCredits }}/3 hak kullanılabilir</span>
+            </div>
+          </div>
+
+          <div class="plans-grid">
+            <div class="plan-card" *ngFor="let plan of plans" [class.current]="plan.isCurrent" [style.--plan-color]="plan.color">
+              <div class="plan-badge" *ngIf="plan.badge">{{ plan.badge }}</div>
+              <div class="plan-name" [style.color]="plan.color">{{ plan.name }}</div>
+              <div class="plan-price">
+                <span class="price-amount">{{ plan.price }}</span>
+                <span class="price-period">{{ plan.period }}</span>
+              </div>
+              <ul class="plan-features">
+                <li *ngFor="let f of plan.features">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" [attr.stroke]="plan.color" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  {{ f }}
+                </li>
+              </ul>
+              <button
+                class="plan-btn"
+                [class.current]="plan.isCurrent"
+                [style.background]="plan.isCurrent ? null : plan.color"
+                (click)="!plan.isCurrent && selectPlan(plan.id)"
+                [disabled]="plan.isCurrent">
+                {{ plan.isCurrent ? '✓ Mevcut Plan' : 'Yükselt' }}
+              </button>
+            </div>
+          </div>
+
+          <div class="billing-info">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Tüm planlar aylık faturalandırılır. İstediğiniz zaman iptal edebilirsiniz. Detaylı bilgi için <a href="#">SSS</a> sayfasını ziyaret edin.
+          </div>
+        </div>
+
+        <!-- ====== DANGER ZONE ====== -->
+        <div *ngIf="activeSection === 'danger'">
+          <div class="section-header danger">
+            <h2>⚠️ Tehlikeli Bölge</h2>
+            <p>Bu işlemler geri alınamaz. Lütfen dikkatli olun.</p>
+          </div>
+
+          <div class="danger-card">
+            <div class="danger-item">
+              <div class="danger-info">
+                <h4>Hesabı Dondur</h4>
+                <p>Hesabınızı geçici olarak devre dışı bırakın. İlanlarınız gizlenir, dilediğinizde tekrar aktif edebilirsiniz.</p>
+              </div>
+              <button class="btn-warning" (click)="showDeactivateModal = true">Hesabı Dondur</button>
+            </div>
+          </div>
+
+          <div class="danger-card delete">
+            <div class="danger-item">
+              <div class="danger-info">
+                <h4>Hesabı Kalıcı Sil</h4>
+                <p>Hesabınız ve tüm verileriniz (ilanlar, mesajlar, favoriler) <strong>kalıcı olarak silinir</strong>. Bu işlem geri alınamaz.</p>
+              </div>
+              <button class="btn-danger-action" (click)="showDeleteModal = true">Hesabı Sil</button>
+            </div>
+            <div class="danger-checklist">
+              <h5>Silme işlemi şunları kaldırır:</h5>
+              <ul>
+                <li>✗ Tüm ilanlarınız ve fotoğrafları</li>
+                <li>✗ Mesaj geçmişiniz</li>
+                <li>✗ Favori listeniz</li>
+                <li>✗ Profil bilgileriniz ve değerlendirmeler</li>
+                <li>✗ Satın alınan paket hakları</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Deactivate Modal -->
+<div class="modal-overlay" *ngIf="showDeactivateModal" (click)="showDeactivateModal = false">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-icon">🧊</div>
+    <h3>Hesabı Dondur</h3>
+    <p>Hesabınız geçici olarak dondurulacak ve tüm ilanlarınız gizlenecek. İstediğiniz zaman giriş yaparak tekrar aktif edebilirsiniz.</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="showDeactivateModal = false">Vazgeç</button>
+      <button class="btn-warning-solid" (click)="deactivateAccount()">Hesabı Dondur</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal-overlay" *ngIf="showDeleteModal" (click)="showDeleteModal = false">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-icon">🗑️</div>
+    <h3>Hesabı Kalıcı Sil</h3>
+    <p>Bu işlem geri alınamaz. Devam etmek için aşağıya <strong>HESABIMI SİL</strong> yazın.</p>
+    <input type="text" [(ngModel)]="deleteConfirmText" placeholder="HESABIMI SİL" class="delete-confirm-input">
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="showDeleteModal = false; deleteConfirmText = ''">Vazgeç</button>
+      <button class="btn-danger" (click)="deleteAccount()" [disabled]="!canDelete || isDeleting">
+        <span class="spinner small" *ngIf="isDeleting"></span>
+        {{ isDeleting ? 'Siliniyor...' : 'Kalıcı Olarak Sil' }}
+      </button>
+    </div>
+  </div>
+</div>

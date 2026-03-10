@@ -1,0 +1,222 @@
+<div class="panel-layout" [class.sidebar-open]="isMobileSidebarOpen">
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" (click)="closeMobileSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon">🏠</span>
+      <span class="brand-name">EmlakNet</span>
+    </div>
+
+    <div class="sidebar-user">
+      <div class="avatar-circle">{{ currentUser.initials }}</div>
+      <div class="user-details">
+        <div class="user-name">{{ currentUser.name }}</div>
+        <div class="user-email">{{ currentUser.email }}</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-link" routerLink="/customer/dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-link" routerLink="/customer/dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>İlanlarım</span>
+      </a>
+      <a class="nav-link active" routerLink="/customer/favorites">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        <span>Favorilerim</span>
+        <span class="badge">{{ favorites.length }}</span>
+      </a>
+      <a class="nav-link" routerLink="/customer/messages">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        <span>Mesajlar</span>
+        <span class="badge danger">3</span>
+      </a>
+      <a class="nav-link" routerLink="/customer/profile">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span>Profilim</span>
+      </a>
+      <a class="nav-link" routerLink="/customer/settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        <span>Ayarlar</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Çıkış Yap
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Top Bar (Mobile) -->
+    <div class="mobile-topbar">
+      <button class="hamburger" (click)="toggleMobileSidebar()">
+        <span></span><span></span><span></span>
+      </button>
+      <span class="mobile-title">Favorilerim</span>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="header-left">
+        <h1>Favorilerim</h1>
+        <p>Beğendiğiniz ilanları buradan takip edin</p>
+      </div>
+      <div class="header-actions">
+        <div class="view-toggle">
+          <button [class.active]="viewMode === 'grid'" (click)="viewMode = 'grid'" title="Grid Görünüm">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+          </button>
+          <button [class.active]="viewMode === 'list'" (click)="viewMode = 'list'" title="Liste Görünüm">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters Bar -->
+    <div class="filters-bar">
+      <div class="filter-tabs">
+        <button class="filter-tab" [class.active]="activeFilter === 'all'" (click)="setFilter('all')">
+          Tümü <span class="count">{{ favorites.length }}</span>
+        </button>
+        <button class="filter-tab" [class.active]="activeFilter === 'sale'" (click)="setFilter('sale')">
+          Satılık <span class="count">{{ saleCount }}</span>
+        </button>
+        <button class="filter-tab" [class.active]="activeFilter === 'rent'" (click)="setFilter('rent')">
+          Kiralık <span class="count">{{ rentCount }}</span>
+        </button>
+      </div>
+
+      <div class="filter-controls">
+        <div class="search-box">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" placeholder="İlan veya konum ara..." [(ngModel)]="searchQuery">
+        </div>
+        <select [(ngModel)]="sortBy" class="sort-select">
+          <option value="date">En Yeni</option>
+          <option value="price-asc">Fiyat (Düşük → Yüksek)</option>
+          <option value="price-desc">Fiyat (Yüksek → Düşük)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredFavorites.length === 0">
+      <div class="empty-icon">💝</div>
+      <h3>{{ searchQuery ? 'Sonuç bulunamadı' : 'Henüz favori eklenmemiş' }}</h3>
+      <p>{{ searchQuery ? 'Arama kriterlerinizi değiştirmeyi deneyin.' : 'İlanları incelerken kalp ikonuna tıklayarak favorilere ekleyebilirsiniz.' }}</p>
+      <a routerLink="/" class="btn-primary" *ngIf="!searchQuery">İlanları Keşfet</a>
+    </div>
+
+    <!-- Grid View -->
+    <div class="properties-grid" *ngIf="viewMode === 'grid' && filteredFavorites.length > 0">
+      <div class="property-card" *ngFor="let property of filteredFavorites">
+        <div class="card-image" [style.background]="property.imageGradient">
+          <div class="card-badges">
+            <span class="badge-type" [class.rent]="property.priceType === 'rent'">
+              {{ property.priceType === 'sale' ? 'Satılık' : 'Kiralık' }}
+            </span>
+            <span class="badge-featured" *ngIf="property.badge">{{ property.badge }}</span>
+          </div>
+          <div class="card-status" *ngIf="!property.isActive">
+            <span class="status-inactive">Pasif İlan</span>
+          </div>
+          <button class="remove-btn" (click)="confirmRemove(property)" title="Favoriden Çıkar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </button>
+          <div class="card-property-type">{{ property.propertyType }}</div>
+        </div>
+        <div class="card-body">
+          <div class="card-price">{{ formatPrice(property.price, property.priceType) }}</div>
+          <h3 class="card-title">{{ property.title }}</h3>
+          <div class="card-location">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            {{ property.location }}
+          </div>
+          <div class="card-specs">
+            <span>{{ property.rooms }}</span>
+            <span class="dot">·</span>
+            <span>{{ property.area }} m²</span>
+            <span class="dot">·</span>
+            <span>{{ property.floor }}</span>
+          </div>
+          <div class="card-footer">
+            <div class="added-date">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              {{ formatDate(property.addedDate) }}
+            </div>
+            <div class="card-actions">
+              <button class="btn-contact" (click)="contactOwner(property.id)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              </button>
+              <button class="btn-view" (click)="viewProperty(property.id)">İlanı Gör</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- List View -->
+    <div class="properties-list" *ngIf="viewMode === 'list' && filteredFavorites.length > 0">
+      <div class="list-item" *ngFor="let property of filteredFavorites">
+        <div class="list-image" [style.background]="property.imageGradient">
+          <span class="badge-type-sm" [class.rent]="property.priceType === 'rent'">
+            {{ property.priceType === 'sale' ? 'Satılık' : 'Kiralık' }}
+          </span>
+        </div>
+        <div class="list-body">
+          <div class="list-top">
+            <h3>{{ property.title }}</h3>
+            <span class="list-price">{{ formatPrice(property.price, property.priceType) }}</span>
+          </div>
+          <div class="list-meta">
+            <span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              {{ property.location }}
+            </span>
+            <span>{{ property.rooms }}</span>
+            <span>{{ property.area }} m²</span>
+            <span>{{ property.floor }}</span>
+            <span *ngIf="!property.isActive" class="inactive-tag">Pasif</span>
+          </div>
+        </div>
+        <div class="list-actions">
+          <button class="btn-icon" (click)="contactOwner(property.id)" title="Mesaj Gönder">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          </button>
+          <button class="btn-icon" (click)="viewProperty(property.id)" title="İlanı Gör">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+          <button class="btn-icon danger" (click)="confirmRemove(property)" title="Favoriden Çıkar">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Remove Confirmation Modal -->
+<div class="modal-overlay" *ngIf="showRemoveModal" (click)="closeModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-icon">💔</div>
+    <h3>Favoriden Çıkar</h3>
+    <p><strong>{{ selectedProperty?.title }}</strong> ilanını favorilerden çıkarmak istediğinize emin misiniz?</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="closeModal()">Vazgeç</button>
+      <button class="btn-danger" (click)="removeFavorite()">Evet, Çıkar</button>
+    </div>
+  </div>
+</div>

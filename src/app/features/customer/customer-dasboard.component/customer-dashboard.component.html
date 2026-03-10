@@ -1,258 +1,269 @@
-<div class="dashboard-container">
-  <!-- Mobile Header -->
-  <div class="mobile-header">
-    <button class="mobile-menu-btn" (click)="toggleMobileSidebar()">
-      <span class="hamburger-icon">☰</span>
+<div class="dashboard-root" [class.sidebar-open]="isMobileSidebarOpen">
+
+  <!-- ── Mobile Header ── -->
+  <div class="mobile-topbar">
+    <button class="hamburger" (click)="toggleMobileSidebar()">
+      <span></span><span></span><span></span>
     </button>
-    <div class="mobile-logo">
-      <span class="logo-icon">🏠</span>
-      <span class="logo-text">EmlakNet</span>
+    <div class="mobile-brand">
+      <span>🏠</span>
+      <span class="brand-text">EmlakNet</span>
     </div>
-    <div class="mobile-placeholder"></div>
+    <button class="mobile-notif" routerLink="/customer/messages">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+      <span class="notif-dot">3</span>
+    </button>
   </div>
 
-  <!-- Sidebar Overlay -->
-  <div 
-    class="sidebar-overlay" 
-    *ngIf="isMobileSidebarOpen"
-    (click)="closeMobileSidebar()"
-  ></div>
+  <!-- ── Overlay ── -->
+  <div class="sidebar-overlay" (click)="closeMobileSidebar()"></div>
 
-  <!-- Sidebar -->
-  <aside class="dashboard-sidebar" [class.mobile-open]="isMobileSidebarOpen">
-    <div class="sidebar-header">
-      <div class="logo">
-        <span class="logo-icon">🏠</span>
-        <span class="logo-text">EmlakNet</span>
-      </div>
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon">🏠</span>
+      <span class="brand-name">EmlakNet</span>
     </div>
 
     <div class="sidebar-user" *ngIf="currentUser">
-      <div class="user-avatar">
+      <div class="avatar-circle">
         {{ currentUser.firstName.charAt(0) }}{{ currentUser.lastName.charAt(0) }}
       </div>
-      <div class="user-info">
+      <div class="user-details">
         <div class="user-name">{{ currentUser.firstName }} {{ currentUser.lastName }}</div>
         <div class="user-email">{{ currentUser.email }}</div>
       </div>
     </div>
+    <div class="sidebar-user" *ngIf="!currentUser">
+      <div class="avatar-circle">K</div>
+      <div class="user-details">
+        <div class="user-name">Kullanıcı</div>
+        <div class="user-email">kullanici@emlaknet.com</div>
+      </div>
+    </div>
 
     <nav class="sidebar-nav">
-      <a class="nav-item active" routerLink="/customer/dashboard" (click)="closeMobileSidebar()">
-        <span class="nav-icon">📊</span>
-        <span class="nav-text">Dashboard</span>
+      <a class="nav-link active" routerLink="/customer/dashboard" (click)="closeMobileSidebar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>Dashboard</span>
       </a>
-      <a class="nav-item" routerLink="/customer/properties" (click)="closeMobileSidebar()">
-        <span class="nav-icon">🏠</span>
-        <span class="nav-text">İlanlarım</span>
+      <a class="nav-link" routerLink="/customer/dashboard" (click)="closeMobileSidebar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>İlanlarım</span>
+        <span class="badge">{{ myProperties.length }}</span>
       </a>
-      <a class="nav-item" routerLink="/customer/favorites" (click)="closeMobileSidebar()">
-        <span class="nav-icon">❤️</span>
-        <span class="nav-text">Favorilerim</span>
+      <a class="nav-link" routerLink="/customer/favorites" (click)="closeMobileSidebar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        <span>Favorilerim</span>
       </a>
-      <a class="nav-item" routerLink="/customer/messages" (click)="closeMobileSidebar()">
-        <span class="nav-icon">💬</span>
-        <span class="nav-text">Mesajlar</span>
-        <span class="nav-badge">3</span>
+      <a class="nav-link" routerLink="/customer/messages" (click)="closeMobileSidebar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        <span>Mesajlar</span>
+        <span class="badge danger">3</span>
       </a>
-      <a class="nav-item" routerLink="/customer/profile" (click)="closeMobileSidebar()">
-        <span class="nav-icon">⚙️</span>
-        <span class="nav-text">Ayarlar</span>
+      <a class="nav-link" routerLink="/customer/profile" (click)="closeMobileSidebar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span>Profilim</span>
       </a>
-      <button class="nav-item logout" (click)="logout(); closeMobileSidebar()">
-        <span class="nav-icon">🚪</span>
-        <span class="nav-text">Çıkış Yap</span>
-      </button>
+      <a class="nav-link" routerLink="/customer/profile" (click)="closeMobileSidebar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        <span>Ayarlar</span>
+      </a>
     </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Çıkış Yap
+      </button>
+    </div>
   </aside>
 
-  <!-- Main Content -->
-  <main class="dashboard-main">
-    <!-- Header -->
-    <header class="dashboard-header">
-      <div class="header-content">
-        <h1 class="page-title">İlanlarım</h1>
-        <button class="btn-create-property" (click)="createNewProperty()">
-          <span class="btn-icon">➕</span>
-          Yeni İlan Oluştur
-        </button>
-      </div>
-    </header>
+  <!-- ── Main ── -->
+  <main class="main-content">
 
-    <!-- Stats Cards -->
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="header-left">
+        <h1>İlanlarım</h1>
+        <p>Tüm mülk ilanlarınızı buradan yönetebilirsiniz</p>
+      </div>
+      <button class="create-btn" (click)="createNewProperty()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Yeni İlan Oluştur
+      </button>
+    </div>
+
+    <!-- Stats Grid -->
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-icon">📋</div>
-        <div class="stat-content">
-          <div class="stat-value">{{ stats.totalProperties }}</div>
-          <div class="stat-label">Toplam İlan</div>
+        <div class="stat-icon-wrap purple">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="stat-data">
+          <div class="stat-val">{{ stats.totalProperties }}</div>
+          <div class="stat-lbl">Toplam İlan</div>
+        </div>
+        <div class="stat-trend up" *ngIf="stats.totalProperties > 0">+{{ stats.totalProperties }}</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon-wrap green">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="stat-data">
+          <div class="stat-val">{{ stats.activeProperties }}</div>
+          <div class="stat-lbl">Aktif İlan</div>
+        </div>
+        <div class="stat-progress">
+          <div class="progress-fill green" [style.width.%]="stats.totalProperties ? (stats.activeProperties / stats.totalProperties) * 100 : 0"></div>
         </div>
       </div>
 
       <div class="stat-card">
-        <div class="stat-icon">✅</div>
-        <div class="stat-content">
-          <div class="stat-value">{{ stats.activeProperties }}</div>
-          <div class="stat-label">Aktif İlan</div>
+        <div class="stat-icon-wrap blue">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="stat-data">
+          <div class="stat-val">{{ stats.totalViews }}</div>
+          <div class="stat-lbl">Görüntülenme</div>
+        </div>
+        <div class="stat-trend up" *ngIf="stats.totalViews > 0">Bu ay</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon-wrap red">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <div class="stat-data">
+          <div class="stat-val">{{ stats.totalFavorites }}</div>
+          <div class="stat-lbl">Favoriye Eklenme</div>
         </div>
       </div>
 
       <div class="stat-card">
-        <div class="stat-icon">👁️</div>
-        <div class="stat-content">
-          <div class="stat-value">{{ stats.totalViews }}</div>
-          <div class="stat-label">Toplam Görüntülenme</div>
+        <div class="stat-icon-wrap orange">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.0 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.08 6.08l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 15"/></svg>
+        </div>
+        <div class="stat-data">
+          <div class="stat-val">{{ stats.totalContacts }}</div>
+          <div class="stat-lbl">İletişim İsteği</div>
         </div>
       </div>
 
-      <div class="stat-card">
-        <div class="stat-icon">❤️</div>
-        <div class="stat-content">
-          <div class="stat-value">{{ stats.totalFavorites }}</div>
-          <div class="stat-label">Favoriye Eklenme</div>
+      <div class="stat-card highlight">
+        <div class="stat-icon-wrap teal">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/><polyline points="20 6 9 17 4 12"/></svg>
         </div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-icon">📞</div>
-        <div class="stat-content">
-          <div class="stat-value">{{ stats.totalContacts }}</div>
-          <div class="stat-label">İletişim</div>
-        </div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-icon">✔️</div>
-        <div class="stat-content">
-          <div class="stat-value">{{ stats.soldProperties }}</div>
-          <div class="stat-label">Satılan/Kiralanan</div>
+        <div class="stat-data">
+          <div class="stat-val">{{ stats.soldProperties }}</div>
+          <div class="stat-lbl">Satılan / Kiralanan</div>
         </div>
       </div>
     </div>
 
     <!-- Filter Tabs -->
-    <div class="filter-tabs">
-      <button 
-        class="filter-tab" 
-        [class.active]="activeTab === 'all'"
-        (click)="filterProperties('all')"
-      >
-        Tümü ({{ myProperties.length }})
+    <div class="tab-bar">
+      <button class="tab-btn" [class.active]="activeTab === 'all'" (click)="filterProperties('all')">
+        Tümü <span class="tab-count">{{ myProperties.length }}</span>
       </button>
-      <button 
-        class="filter-tab" 
-        [class.active]="activeTab === 'active'"
-        (click)="filterProperties('active')"
-      >
-        Aktif ({{ stats.activeProperties }})
+      <button class="tab-btn" [class.active]="activeTab === 'active'" (click)="filterProperties('active')">
+        Aktif <span class="tab-count green">{{ stats.activeProperties }}</span>
       </button>
-      <button 
-        class="filter-tab" 
-        [class.active]="activeTab === 'sold'"
-        (click)="filterProperties('sold')"
-      >
-        Satılan/Kiralanan ({{ stats.soldProperties }})
+      <button class="tab-btn" [class.active]="activeTab === 'sold'" (click)="filterProperties('sold')">
+        Satılan/Kiralanan <span class="tab-count teal">{{ stats.soldProperties }}</span>
       </button>
-      <button 
-        class="filter-tab" 
-        [class.active]="activeTab === 'inactive'"
-        (click)="filterProperties('inactive')"
-      >
-        Pasif
+      <button class="tab-btn" [class.active]="activeTab === 'inactive'" (click)="filterProperties('inactive')">
+        Pasif <span class="tab-count">0</span>
       </button>
     </div>
 
     <!-- Properties List -->
-    <div class="properties-section">
+    <div class="properties-area">
+
       <!-- Loading -->
-      <div *ngIf="loading" class="loading-container">
-        <div class="loading-spinner"></div>
-        <p>İlanlar yükleniyor...</p>
+      <div class="state-loading" *ngIf="loading">
+        <div class="spinner"></div>
+        <p>İlanlar yükleniyor…</p>
       </div>
 
       <!-- Empty State -->
-      <div *ngIf="!loading && filteredProperties.length === 0" class="empty-state">
-        <div class="empty-icon">🏠</div>
+      <div class="state-empty" *ngIf="!loading && filteredProperties.length === 0">
+        <div class="empty-visual">🏠</div>
         <h3>Henüz ilan bulunmuyor</h3>
         <p>Hemen ilk ilanınızı oluşturun ve binlerce kişiye ulaşın!</p>
-        <button class="btn-create-property" (click)="createNewProperty()">
-          <span class="btn-icon">➕</span>
+        <button class="create-btn" (click)="createNewProperty()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           İlk İlanı Oluştur
         </button>
       </div>
 
-      <!-- Properties Grid -->
-      <div *ngIf="!loading && filteredProperties.length > 0" class="properties-list">
-        <div *ngFor="let property of filteredProperties" class="property-item">
-          <div class="property-image">
-            <div class="image-placeholder">
-              <span>Fotoğraf</span>
-            </div>
-            <div class="property-badges">
-              <span class="badge badge-status" [ngClass]="getStatusClass(property.status)">
+      <!-- Property Cards -->
+      <div class="property-list" *ngIf="!loading && filteredProperties.length > 0">
+        <div class="property-row" *ngFor="let property of filteredProperties">
+
+          <!-- Image -->
+          <div class="prop-thumb" [class]="'gradient-' + ((property.id % 4) + 1)">
+            <div class="prop-badges">
+              <span class="pbadge" [class.active]="property.status === 'active'" [class.sold]="property.status === 'sold'" [class.inactive]="property.status === 'inactive'">
                 {{ getStatusLabel(property.status) }}
               </span>
-              <span class="badge badge-vip" *ngIf="property.isVip">VIP</span>
-              <span class="badge badge-featured" *ngIf="property.isFeatured">Öne Çıkan</span>
+              <span class="pbadge vip" *ngIf="property.isVip">VIP</span>
+              <span class="pbadge feat" *ngIf="property.isFeatured">Öne Çıkan</span>
             </div>
+            <div class="thumb-label">{{ property.propertyType === 'apartment' ? '🏢' : property.propertyType === 'villa' ? '🏰' : '🏠' }}</div>
           </div>
 
-          <div class="property-content">
-            <div class="property-header">
-              <h3 class="property-title">{{ property.title }}</h3>
-              <div class="property-toggle">
-                <label class="switch">
-                  <input 
-                    type="checkbox" 
-                    [checked]="property.isActive"
-                    (change)="togglePropertyStatus(property)"
-                  />
-                  <span class="slider"></span>
+          <!-- Content -->
+          <div class="prop-body">
+            <div class="prop-top">
+              <div class="prop-title-row">
+                <h3 class="prop-title">{{ property.title }}</h3>
+                <label class="toggle-switch">
+                  <input type="checkbox" [checked]="property.isActive" (change)="togglePropertyStatus(property)" />
+                  <span class="switch-track"></span>
                 </label>
               </div>
+              <div class="prop-price">{{ formatPrice(property.price) }}</div>
             </div>
 
-            <div class="property-info">
-              <div class="property-price">{{ formatPrice(property.price) }}</div>
-              <div class="property-location">
-                📍 {{ property.address.district }}, {{ property.address.city }}
-              </div>
-              <div class="property-details">
-                <span *ngIf="property.details?.rooms">🛏️ {{ property.details.rooms }} Oda</span>
-                <span *ngIf="property.details?.area">📐 {{ property.details.area }} m²</span>
-              </div>
+            <div class="prop-meta-row">
+              <span class="prop-loc">📍 {{ property.address.district }}, {{ property.address.city }}</span>
+              <span class="prop-detail" *ngIf="property.details?.rooms">🛏 {{ property.details.rooms }} Oda</span>
+              <span class="prop-detail" *ngIf="property.details?.area">📐 {{ property.details.area }} m²</span>
             </div>
 
-            <div class="property-stats">
-              <div class="stat-item">
-                <span class="stat-icon">👁️</span>
-                <span class="stat-text">{{ property.statistics.viewCount }}</span>
+            <div class="prop-stats-row">
+              <div class="prop-stat">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                {{ property.statistics.viewCount }}
               </div>
-              <div class="stat-item">
-                <span class="stat-icon">❤️</span>
-                <span class="stat-text">{{ property.statistics.favoriteCount }}</span>
+              <div class="prop-stat">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                {{ property.statistics.favoriteCount }}
               </div>
-              <div class="stat-item">
-                <span class="stat-icon">📞</span>
-                <span class="stat-text">{{ property.statistics.contactCount }}</span>
+              <div class="prop-stat">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.0 1.18 2 2 0 012 0h3a2 2 0 012 1.72"/></svg>
+                {{ property.statistics.contactCount }}
               </div>
+              <span class="prop-date">{{ formatDate(property.createdAt) }}</span>
             </div>
 
-            <div class="property-meta">
-              <span class="property-date">{{ formatDate(property.createdAt) }}</span>
-            </div>
-
-            <div class="property-actions">
-              <button class="btn-action btn-view" (click)="viewProperty(property)" title="Görüntüle">
-                <span class="btn-icon">👁️</span>
+            <div class="prop-actions">
+              <button class="pact-btn view" (click)="viewProperty(property)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                 Görüntüle
               </button>
-              <button class="btn-action btn-edit" (click)="editProperty(property)" title="Düzenle">
-                <span class="btn-icon">✏️</span>
+              <button class="pact-btn edit" (click)="editProperty(property)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                 Düzenle
               </button>
-              <button class="btn-action btn-delete" (click)="confirmDelete(property)" title="Sil">
-                <span class="btn-icon">🗑️</span>
+              <button class="pact-btn boost">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                Öne Çıkar
+              </button>
+              <button class="pact-btn delete" (click)="confirmDelete(property)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
                 Sil
               </button>
             </div>
@@ -260,30 +271,23 @@
         </div>
       </div>
     </div>
+
   </main>
 
-  <!-- Delete Confirmation Modal -->
-  <div class="modal-overlay" *ngIf="showDeleteModal" (click)="closeDeleteModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h3>İlanı Sil</h3>
-        <button class="modal-close" (click)="closeDeleteModal()">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="modal-icon warning">⚠️</div>
-        <p>
-          <strong>{{ selectedProperty?.title }}</strong> başlıklı ilanı silmek istediğinizden emin misiniz?
-        </p>
-        <p class="warning-text">Bu işlem geri alınamaz!</p>
-      </div>
-      <div class="modal-actions">
-        <button class="btn-modal btn-cancel" (click)="closeDeleteModal()">
-          İptal
-        </button>
-        <button class="btn-modal btn-confirm-delete" (click)="deleteProperty()">
-          Evet, Sil
-        </button>
+  <!-- ── Delete Modal ── -->
+  <div class="modal-backdrop" *ngIf="showDeleteModal" (click)="closeDeleteModal()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <div class="modal-icon">⚠️</div>
+      <h3>İlanı Sil</h3>
+      <p>
+        <strong>{{ selectedProperty?.title }}</strong> başlıklı ilanı silmek istediğinizden emin misiniz?
+        Bu işlem geri alınamaz.
+      </p>
+      <div class="modal-btns">
+        <button class="mbtn cancel" (click)="closeDeleteModal()">İptal</button>
+        <button class="mbtn confirm" (click)="deleteProperty()">Evet, Sil</button>
       </div>
     </div>
   </div>
+
 </div>

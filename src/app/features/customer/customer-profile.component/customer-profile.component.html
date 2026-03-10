@@ -1,0 +1,289 @@
+<div class="panel-layout" [class.sidebar-open]="isMobileSidebarOpen">
+
+  <div class="mobile-overlay" (click)="closeMobileSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon">🏠</span>
+      <span class="brand-name">EmlakNet</span>
+    </div>
+    <div class="sidebar-user">
+      <div class="avatar-circle">{{ initials }}</div>
+      <div class="user-details">
+        <div class="user-name">{{ fullName }}</div>
+        <div class="user-email">{{ profileForm.get('email')?.value }}</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-link" routerLink="/customer/dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg><span>Dashboard</span></a>
+      <a class="nav-link" routerLink="/customer/dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg><span>İlanlarım</span></a>
+      <a class="nav-link" routerLink="/customer/favorites"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span>Favorilerim</span></a>
+      <a class="nav-link" routerLink="/customer/messages"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Mesajlar</span><span class="badge danger">3</span></a>
+      <a class="nav-link active" routerLink="/customer/profile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span>Profilim</span></a>
+      <a class="nav-link" routerLink="/customer/settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg><span>Ayarlar</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Çıkış Yap</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <div class="mobile-topbar">
+      <button class="hamburger" (click)="toggleMobileSidebar()"><span></span><span></span><span></span></button>
+      <span class="mobile-title">Profilim</span>
+    </div>
+
+    <div class="page-header">
+      <div>
+        <h1>Profilim</h1>
+        <p>Kişisel bilgilerinizi ve istatistiklerinizi yönetin</p>
+      </div>
+    </div>
+
+    <!-- Profile Card -->
+    <div class="profile-hero">
+      <div class="profile-avatar-section">
+        <div class="avatar-wrapper">
+          <div class="avatar-large" [style.background-image]="avatarPreview ? 'url(' + avatarPreview + ')' : null"
+               [class.has-image]="!!avatarPreview">
+            <span *ngIf="!avatarPreview">{{ initials }}</span>
+          </div>
+          <label class="avatar-edit" for="avatar-upload" title="Fotoğraf Değiştir">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </label>
+          <input id="avatar-upload" type="file" accept="image/*" (change)="onFileSelect($event)" style="display:none">
+        </div>
+        <div class="profile-hero-info">
+          <h2>{{ fullName }}</h2>
+          <p class="profile-email">{{ profileForm.get('email')?.value }}</p>
+          <div class="profile-badges">
+            <span class="badge-verified">✓ Doğrulanmış Üye</span>
+            <span class="badge-member">Üye: {{ stats.memberSince }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="profile-quick-stats">
+        <div class="qs">
+          <span class="qs-value">{{ stats.totalAds }}</span>
+          <span class="qs-label">İlan</span>
+        </div>
+        <div class="qs-divider"></div>
+        <div class="qs">
+          <span class="qs-value">{{ avgRating.toFixed(1) }}</span>
+          <span class="qs-label">Puan</span>
+        </div>
+        <div class="qs-divider"></div>
+        <div class="qs">
+          <span class="qs-value">{{ stats.responseRate }}%</span>
+          <span class="qs-label">Yanıt Oranı</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab" [class.active]="activeTab === 'info'" (click)="activeTab = 'info'">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Kişisel Bilgiler
+      </button>
+      <button class="tab" [class.active]="activeTab === 'stats'" (click)="activeTab = 'stats'">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        İstatistikler
+      </button>
+      <button class="tab" [class.active]="activeTab === 'reviews'" (click)="activeTab = 'reviews'">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Değerlendirmeler
+        <span class="tab-count">{{ reviews.length }}</span>
+      </button>
+    </div>
+
+    <!-- Tab: Kişisel Bilgiler -->
+    <div *ngIf="activeTab === 'info'">
+      <div class="success-banner" *ngIf="saveSuccess">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        Profil bilgileriniz başarıyla güncellendi!
+      </div>
+
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+        <div class="form-section">
+          <h3 class="section-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            Temel Bilgiler
+          </h3>
+          <div class="form-grid">
+            <div class="field">
+              <label>Ad <span class="required">*</span></label>
+              <input type="text" formControlName="firstName" placeholder="Adınız" [class.error]="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched">
+              <span class="field-error" *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched">Ad zorunludur</span>
+            </div>
+            <div class="field">
+              <label>Soyad <span class="required">*</span></label>
+              <input type="text" formControlName="lastName" placeholder="Soyadınız" [class.error]="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched">
+              <span class="field-error" *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched">Soyad zorunludur</span>
+            </div>
+            <div class="field">
+              <label>E-posta <span class="required">*</span></label>
+              <input type="email" formControlName="email" placeholder="ornek@mail.com" [class.error]="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+              <span class="field-error" *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">Geçerli bir e-posta girin</span>
+            </div>
+            <div class="field">
+              <label>Telefon</label>
+              <input type="tel" formControlName="phone" placeholder="05XX XXX XX XX">
+            </div>
+            <div class="field">
+              <label>Şehir</label>
+              <input type="text" formControlName="city" placeholder="İstanbul">
+            </div>
+            <div class="field">
+              <label>İlçe</label>
+              <input type="text" formControlName="district" placeholder="Kadıköy">
+            </div>
+          </div>
+          <div class="field full">
+            <label>Hakkımda</label>
+            <textarea formControlName="bio" rows="4" placeholder="Kendinizi kısaca tanıtın..."></textarea>
+            <span class="field-hint">{{ profileForm.get('bio')?.value?.length || 0 }} / 500 karakter</span>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3 class="section-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Gizlilik & İletişim
+          </h3>
+          <div class="toggle-group">
+            <div class="toggle-item">
+              <div class="toggle-info">
+                <span class="toggle-label">Telefon Numarasını Göster</span>
+                <span class="toggle-desc">İlanlarınızda telefon numaranız görünsün</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" formControlName="showPhone">
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+            <div class="toggle-item">
+              <div class="toggle-info">
+                <span class="toggle-label">E-posta Adresini Göster</span>
+                <span class="toggle-desc">Profilinizde e-posta adresiniz görünsün</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" formControlName="showEmail">
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+            <div class="toggle-item">
+              <div class="toggle-info">
+                <span class="toggle-label">WhatsApp ile İletişim</span>
+                <span class="toggle-desc">Alıcılar sizi WhatsApp üzerinden arayabilsin</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" formControlName="whatsapp">
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-save" [disabled]="isSaving">
+            <svg *ngIf="!isSaving" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            <span class="spinner" *ngIf="isSaving"></span>
+            {{ isSaving ? 'Kaydediliyor...' : 'Değişiklikleri Kaydet' }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Tab: İstatistikler -->
+    <div *ngIf="activeTab === 'stats'">
+      <div class="stats-grid">
+        <div class="stat-card purple">
+          <div class="stat-icon">📋</div>
+          <div class="stat-value">{{ stats.totalAds }}</div>
+          <div class="stat-label">Toplam İlan</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon">✅</div>
+          <div class="stat-value">{{ stats.activeAds }}</div>
+          <div class="stat-label">Aktif İlan</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-icon">👁️</div>
+          <div class="stat-value">{{ stats.totalViews | number }}</div>
+          <div class="stat-label">Toplam Görüntülenme</div>
+        </div>
+        <div class="stat-card pink">
+          <div class="stat-icon">❤️</div>
+          <div class="stat-value">{{ stats.favoriteCount }}</div>
+          <div class="stat-label">Favoriye Eklenme</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-icon">🏆</div>
+          <div class="stat-value">{{ stats.soldRented }}</div>
+          <div class="stat-label">Satılan / Kiralanan</div>
+        </div>
+        <div class="stat-card teal">
+          <div class="stat-icon">⚡</div>
+          <div class="stat-value">{{ stats.responseRate }}%</div>
+          <div class="stat-label">Yanıt Oranı</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-row">
+          <span class="info-label">Ortalama Yanıt Süresi</span>
+          <span class="info-value">{{ stats.avgResponseTime }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Üyelik Tarihi</span>
+          <span class="info-value">{{ stats.memberSince }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Ortalama Puan</span>
+          <span class="info-value rating-stars">
+            <ng-container *ngFor="let s of getStars(avgRating)">
+              <svg width="14" height="14" viewBox="0 0 24 24" [attr.fill]="s ? '#f59e0b' : 'none'" stroke="#f59e0b" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </ng-container>
+            {{ avgRating.toFixed(1) }} / 5
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Değerlendirmeler -->
+    <div *ngIf="activeTab === 'reviews'">
+      <div class="reviews-summary">
+        <div class="rating-big">{{ avgRating.toFixed(1) }}</div>
+        <div class="rating-stars-big">
+          <ng-container *ngFor="let s of getStars(avgRating)">
+            <svg width="20" height="20" viewBox="0 0 24 24" [attr.fill]="s ? '#f59e0b' : 'none'" stroke="#f59e0b" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </ng-container>
+        </div>
+        <p>{{ reviews.length }} değerlendirme</p>
+      </div>
+
+      <div class="reviews-list">
+        <div class="review-card" *ngFor="let review of reviews">
+          <div class="review-top">
+            <div class="review-avatar">{{ review.initials }}</div>
+            <div class="review-meta">
+              <span class="review-name">{{ review.name }}</span>
+              <span class="review-property">{{ review.propertyTitle }}</span>
+            </div>
+            <div class="review-rating">
+              <ng-container *ngFor="let s of getStars(review.rating)">
+                <svg width="13" height="13" viewBox="0 0 24 24" [attr.fill]="s ? '#f59e0b' : 'none'" stroke="#f59e0b" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </ng-container>
+            </div>
+          </div>
+          <p class="review-comment">{{ review.comment }}</p>
+          <span class="review-date">{{ formatDate(review.date) }}</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
